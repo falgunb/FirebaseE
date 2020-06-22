@@ -4,14 +4,7 @@
     <item
         android:id="@+id/logout_action"
         android:title="Logout"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         android:icon="@drawable/logout"
         />
-
-    <item
-        android:id="@+id/XYZ"
-        android:title="This will trigger Toast"
-        app:showAsAction="ifRoom">
-
-    </item>
 </menu>

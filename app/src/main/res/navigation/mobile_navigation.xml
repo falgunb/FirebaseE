@@ -6,10 +6,10 @@
     app:startDestination="@+id/nav_home">
 
     <fragment
-        android:id="@+id/nav_home"
-        android:name="com.example.firebasee.HomeFragment"
-        android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        android:id="@+id/main_drawer_user_profile"
+        android:name="com.example.firebasee.UserAccountFragment"
+        android:label="User Profile"
+        tools:layout="@layout/fragment_user_account" />
 
     <fragment
         android:id="@+id/nav_gallery"
@@ -22,4 +22,29 @@
         android:name="com.example.firebasee.SlideshowFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.example.firebasee.HomeScreenFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home_screen" />
+
+    <fragment
+        android:id="@+id/btom_menu_search"
+        android:name="com.example.firebasee.SearchFragment"
+        android:label="Search"
+        tools:layout="@layout/fragment_search" />
+
+    <fragment
+        android:id="@+id/mbtom_likes"
+        android:name="com.example.firebasee.LikesFragment"
+        android:label="Activity"
+        tools:layout="@layout/fragment_likes" />
+
+    <fragment
+        android:id="@+id/mbtm_messages"
+        android:name="com.example.firebasee.MessagesFragment"
+        android:label="Messages"
+        tools:layout="@layout/fragment_messages" />
+
 </navigation>
