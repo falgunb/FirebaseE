@@ -8,8 +8,9 @@
 
     <TextView
         android:id="@+id/text_gallery"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:text="Gallary Fragment"
-        android:textSize="50dp"/>
+        android:textSize="50dp"
+        android:gravity="center"/>
 </FrameLayout>
