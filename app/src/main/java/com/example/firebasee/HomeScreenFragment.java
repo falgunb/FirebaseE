@@ -93,7 +93,7 @@ public class HomeScreenFragment extends Fragment {
                     Post post = snapshot.getValue(Post.class);
                     postList.add(post);
                     //for (String id : followingList){
-//                        if (post.getPublisher().equals(followingList)){
+//                        if (post.getPublisher().equals(id)){
 //                            postList.add(post);
 //                        }
                     //}

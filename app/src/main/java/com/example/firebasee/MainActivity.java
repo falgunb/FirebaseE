@@ -139,16 +139,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_user_profile:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new UserAccountFragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new UserAccountFragment()).addToBackStack(null).commit();
                 break;
             case R.id.nav_home:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeScreenFragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeScreenFragment()).addToBackStack(null).commit();
                 break;
             case R.id.nav_gallery:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new GalleryFragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new GalleryFragment()).addToBackStack(null).commit();
                 break;
             case R.id.nav_slideshow:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SlideshowFragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SlideshowFragment()).addToBackStack(null).commit();
                 break;
         }
         mDrawer.closeDrawer(GravityCompat.START);
