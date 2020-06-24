@@ -67,13 +67,13 @@ public class HomeScreenFragment extends Fragment {
         return view;
     }
 
-    private void checkFollowerUsers(){
+    private void checkFollowerUsers() {
         FirebaseDatabase.getInstance().getReference().child("Follow")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Followers").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 followerList.clear();
-                for (DataSnapshot snapshot1 : snapshot.getChildren()){
+                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                     followerList.add(snapshot1.getKey());
                 }
                 readPosts();
@@ -114,15 +114,10 @@ public class HomeScreenFragment extends Fragment {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Post post = snapshot.getValue(Post.class);
 //                    postList.add(post);
-                    for (String id : followingList) {
-                        for (String id1 : followerList){
-                                if (post.getPublisher().equals(id) && post.getPublisher().equals(id1)){
-                                    postList.add(post);
-                                }
+                    for (String id1 : followingList) {
+                        if (post.getPublisher().equals(id1)) {
+                            postList.add(post);
                         }
-//                        if (post.getPublisher().equals(id)) {
-//                            postList.add(post);
-//                        }
                     }
                 }
                 postAdapter.notifyDataSetChanged();

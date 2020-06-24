@@ -59,8 +59,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
-
-
                 holder.username.setText(user.getUsername());
 //                holder.author.setText(user.getName());
             }
@@ -125,8 +123,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-
             }
         });
 
@@ -148,6 +144,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         //        public TextView author;
         public TextView noOfComments;
         public TextView noOfRetweets;
+        public ImageView post_option_dot;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -163,6 +160,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             likes = itemView.findViewById(R.id.no_of_likes);
             //author = itemView.findViewById(R.id.author);
             noOfComments = itemView.findViewById(R.id.no_of_comments);
+            post_option_dot = itemView.findViewById(R.id.image_option_dot);
 
         }
     }
@@ -213,7 +211,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         FirebaseDatabase.getInstance().getReference().child("Likes").child(postId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                text.setText(dataSnapshot.getChildrenCount() + "Likes");
+                text.setText(dataSnapshot.getChildrenCount() +"");
             }
 
             @Override
@@ -227,7 +225,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         FirebaseDatabase.getInstance().getReference().child("Comments").child(postId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                text.setText("View All " + dataSnapshot.getChildrenCount() + " Comments");
+                text.setText(dataSnapshot.getChildrenCount() + "");
             }
 
             @Override
@@ -241,7 +239,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         FirebaseDatabase.getInstance().getReference().child("Retweeted").child(postId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                text.setText(dataSnapshot.getChildrenCount() + " Retweets");
+                text.setText(dataSnapshot.getChildrenCount() + "");
             }
 
             @Override

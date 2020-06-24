@@ -60,20 +60,33 @@
                 app:layout_constraintTop_toTopOf="@+id/image_profile"
                 app:layout_constraintVertical_bias="0.0" />
 
+            <ImageView
+                android:id="@+id/image_option_dot"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="5dp"
+                android:src="@drawable/ic_option_dot"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@drawable/my_custom_background">
 
 
             <TextView
-                android:background="@drawable/my_custom_background"
+
                 android:id="@+id/description"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
-                android:padding="5dp"
+                android:padding="19dp"
+                android:fontFamily="cursive"
                 android:textStyle="bold"
+                android:textColor="#47B9FF"
                 app:autoSizeTextType="uniform"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -122,13 +135,12 @@
                 android:layout_height="30dp"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_marginStart="88dp"
-                android:layout_marginLeft="88dp"
-                app:layout_constraintBottom_toBottomOf="@+id/retweet"
-                app:layout_constraintStart_toStartOf="@+id/retweet"
-                app:layout_constraintTop_toTopOf="@+id/retweet"
-                app:layout_constraintVertical_bias="1.0"
-                android:src="@drawable/ic_message"/>
+                android:layout_marginStart="112dp"
+                android:layout_marginLeft="112dp"
+                android:src="@drawable/ic_message"
+                app:layout_constraintBottom_toBottomOf="@+id/like"
+                app:layout_constraintStart_toStartOf="@+id/like"
+                app:layout_constraintTop_toTopOf="@+id/like" />
 
             <TextView
                 android:id="@+id/no_of_comments"
@@ -142,20 +154,20 @@
                 app:layout_constraintBottom_toBottomOf="@+id/comment"
                 app:layout_constraintStart_toStartOf="@+id/comment"
                 app:layout_constraintTop_toTopOf="@+id/comment"
-                app:layout_constraintVertical_bias="0.421" />
+                app:layout_constraintVertical_bias="0.578" />
 
             <ImageView
                 android:id="@+id/retweet"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_centerInParent="true"
-                android:layout_marginStart="88dp"
-                android:layout_marginLeft="88dp"
+                android:layout_marginStart="56dp"
+                android:layout_marginLeft="56dp"
                 android:src="@drawable/ic_tweet1"
                 app:layout_constraintBottom_toBottomOf="@+id/like"
                 app:layout_constraintStart_toStartOf="@+id/like"
                 app:layout_constraintTop_toTopOf="@+id/like"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintVertical_bias="0.0" />
 
             <TextView
                 android:id="@+id/no_of_retweets"

@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FloatingActionButton fab = findViewById(R.id.fab);
 
         //default fragment
-        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, new HomeScreenFragment()).commit();
+
 
         //Bottom nav
         NavigationView navigationView = findViewById(R.id.navigation_view);
@@ -83,6 +83,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return true;
             }
         });
+
+        Bundle intent = getIntent().getExtras();
+        if (intent != null){
+            String profileId = intent.getString("publisherId");
+            getSharedPreferences("PROFILE",MODE_PRIVATE).edit().putString("profileId",profileId).apply();
+
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new UserAccountFragment()).commit();
+            bottomNavigationView.setSelectedItemId(R.id.bottom_menu_home_nav);
+        } else {
+            getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, new HomeScreenFragment()).commit();
+        }
 
         //drawer layout
         mDrawer = findViewById(R.id.drawer_layout);
