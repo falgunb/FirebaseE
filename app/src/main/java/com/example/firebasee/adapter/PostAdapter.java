@@ -3,6 +3,7 @@ package com.example.firebasee.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +33,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     private Context mContext;
     private List<Post> mPosts;
-
+    private static final String TAG = PostAdapter.class.getSimpleName();
     private FirebaseUser firebaseUser;
 
     public PostAdapter(Context mContext, List<Post> mPosts) {
@@ -70,9 +71,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             }
         });
 
-        isLiked(post.getPostId(),holder.like);
+        isLiked(post.getPostId(), holder.like);
         noOfLikes(post.getPostId(), holder.likes);
         getComments(post.getPostId(), holder.noOfComments);
+        isRetweeted(post.getPostId(), holder.noOfRetweets);
+        ifRetweeted(post.getPostId(), holder.retweet);
 
         holder.like.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,7 +83,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 if (holder.like.getTag().equals("Like")) {
                     FirebaseDatabase.getInstance().getReference().child("Likes").child(post.getPostId()).child(firebaseUser.getUid())
                             .setValue(true);
-                }else {
+                } else {
                     FirebaseDatabase.getInstance().getReference().child("Likes").child(post.getPostId()).child(firebaseUser.getUid())
                             .removeValue();
                 }
@@ -91,8 +94,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(mContext, CommentActivity.class);
-                i.putExtra("postId",post.getPostId());
-                i.putExtra("autherId",post.getPublisher());
+                i.putExtra("postId", post.getPostId());
+                i.putExtra("autherId", post.getPublisher());
                 mContext.startActivity(i);
             }
         });
@@ -101,11 +104,32 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(mContext, CommentActivity.class);
-                i.putExtra("postId",post.getPostId());
-                i.putExtra("autherId",post.getPublisher());
+                i.putExtra("postId", post.getPostId());
+                i.putExtra("autherId", post.getPublisher());
                 mContext.startActivity(i);
             }
         });
+        holder.retweet.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClicked retweet......");
+                try {
+                    if (holder.retweet.getTag().equals("Retweet")) {
+                        FirebaseDatabase.getInstance().getReference().child("Retweeted").child(post.getPostId()).child(firebaseUser.getUid())
+                                .setValue(true);
+                    } else {
+                        FirebaseDatabase.getInstance().getReference().child("Retweeted").child(post.getPostId()).child(firebaseUser.getUid())
+                                .removeValue();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        });
+
     }
 
     @Override
@@ -123,6 +147,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         public TextView likes;
         //        public TextView author;
         public TextView noOfComments;
+        public TextView noOfRetweets;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -132,6 +157,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             description = itemView.findViewById(R.id.description);
             like = itemView.findViewById(R.id.like);
             retweet = itemView.findViewById(R.id.retweet);
+            noOfRetweets = itemView.findViewById(R.id.no_of_retweets);
             comment = itemView.findViewById(R.id.comment);
             username = itemView.findViewById(R.id.post_username);
             likes = itemView.findViewById(R.id.no_of_likes);
@@ -140,14 +166,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
         }
     }
-    private void isLiked(String postId, final ImageView imageView){
+
+    private void isLiked(String postId, final ImageView imageView) {
         FirebaseDatabase.getInstance().getReference().child("Likes").child(postId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.child(firebaseUser.getUid()).exists()){
+                if (dataSnapshot.child(firebaseUser.getUid()).exists()) {
                     imageView.setImageResource(R.drawable.ic_fav1);
                     imageView.setTag("Liked");
-                }else {
+                } else {
                     imageView.setImageResource(R.drawable.ic_fav);
                     imageView.setTag("Like");
                 }
@@ -160,7 +187,28 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         });
     }
 
-    private void noOfLikes(String postId, final TextView text){
+
+    private void ifRetweeted(String postId, final ImageView imageView) {
+        FirebaseDatabase.getInstance().getReference().child("Retweeted").child(postId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.child(firebaseUser.getUid()).exists()) {
+                    imageView.setImageResource(R.drawable.retweet);
+                    imageView.setTag("Retweeted");
+                } else {
+                    imageView.setImageResource(R.drawable.ic_tweet1);
+                    imageView.setTag("Retweet");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void noOfLikes(String postId, final TextView text) {
 
         FirebaseDatabase.getInstance().getReference().child("Likes").child(postId).addValueEventListener(new ValueEventListener() {
             @Override
@@ -175,11 +223,25 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         });
     }
 
-    private void getComments(String postId, final TextView text){
+    private void getComments(String postId, final TextView text) {
         FirebaseDatabase.getInstance().getReference().child("Comments").child(postId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                text.setText("View All" + dataSnapshot.getChildrenCount() + " Comments");
+                text.setText("View All " + dataSnapshot.getChildrenCount() + " Comments");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void isRetweeted(String postId, final TextView text) {
+        FirebaseDatabase.getInstance().getReference().child("Retweeted").child(postId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                text.setText(dataSnapshot.getChildrenCount() + " Retweets");
             }
 
             @Override

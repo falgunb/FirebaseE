@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="8dp"
+
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -16,8 +17,8 @@
         android:id="@+id/more"/-->
 
     <LinearLayout
-        android:layout_width="397dp"
-        android:layout_height="303dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="@drawable/my_custom_background"
         android:gravity="center_vertical"
         android:orientation="vertical">
@@ -60,10 +61,9 @@
                 android:id="@+id/description"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
-                android:textSize="25dp"
                 android:textStyle="bold"
+                app:autoSizeTextType="uniform"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -99,7 +99,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_centerInParent="true"
-                android:src="@drawable/ic_retweet" />
+                android:src="@drawable/ic_tweet1" />
 
         </RelativeLayout>
 
@@ -109,6 +109,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
+            android:textSize="12sp"
             android:text="5 Likes"
             android:textColor="#000000"
             android:textStyle="bold" />
@@ -143,7 +144,18 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
+            android:textSize="8sp"
             android:text="60 Comments"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/no_of_retweets"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="60 Retweets"
+            android:textSize="9sp"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
             android:textColor="#000000" />
 
     </LinearLayout>

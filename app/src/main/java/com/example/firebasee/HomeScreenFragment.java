@@ -1,5 +1,6 @@
 package com.example.firebasee;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import com.example.firebasee.adapter.PostAdapter;
 import com.example.firebasee.model.Post;
@@ -30,7 +32,8 @@ public class HomeScreenFragment extends Fragment {
     private RecyclerView recyclerViewPosts;
     private PostAdapter postAdapter;
     private List<Post> postList;
-
+    private ProgressDialog progressDialog;
+    private ProgressBar pb;
     private List<String> followingList;
 
     public HomeScreenFragment() {
@@ -49,6 +52,9 @@ public class HomeScreenFragment extends Fragment {
         layoutManager.setReverseLayout(true);
         recyclerViewPosts.setLayoutManager(layoutManager);
 
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setMessage("Loading posts...");
+        progressDialog.show();
         postList = new ArrayList<>();
         postAdapter = new PostAdapter(getContext(), postList);
         recyclerViewPosts.setAdapter(postAdapter);
@@ -81,15 +87,16 @@ public class HomeScreenFragment extends Fragment {
         FirebaseDatabase.getInstance().getReference().child("Posts").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                progressDialog.dismiss();
                 postList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Post post = snapshot.getValue(Post.class);
                     postList.add(post);
-//                    for (String id : followingList){
-//                        if (post.getPublisher().equals(id)){
+                    //for (String id : followingList){
+//                        if (post.getPublisher().equals(followingList)){
 //                            postList.add(post);
 //                        }
-//                    }
+                    //}
                 }
                 postAdapter.notifyDataSetChanged();
             }
