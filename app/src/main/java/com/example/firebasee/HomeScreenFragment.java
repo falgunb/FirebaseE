@@ -35,6 +35,7 @@ public class HomeScreenFragment extends Fragment {
     private ProgressDialog progressDialog;
     private ProgressBar pb;
     private List<String> followingList;
+    private List<String> followerList;
 
     public HomeScreenFragment() {
         // Required empty public constructor
@@ -60,8 +61,29 @@ public class HomeScreenFragment extends Fragment {
         recyclerViewPosts.setAdapter(postAdapter);
 
         followingList = new ArrayList<>();
+        followerList = new ArrayList<>();
         checkFollowingUsers();
+        checkFollowerUsers();
         return view;
+    }
+
+    private void checkFollowerUsers(){
+        FirebaseDatabase.getInstance().getReference().child("Follow")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Followers").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                followerList.clear();
+                for (DataSnapshot snapshot1 : snapshot.getChildren()){
+                    followerList.add(snapshot1.getKey());
+                }
+                readPosts();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void checkFollowingUsers() {
@@ -91,12 +113,17 @@ public class HomeScreenFragment extends Fragment {
                 postList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Post post = snapshot.getValue(Post.class);
-                    postList.add(post);
-                    //for (String id : followingList){
-//                        if (post.getPublisher().equals(id)){
+//                    postList.add(post);
+                    for (String id : followingList) {
+                        for (String id1 : followerList){
+                                if (post.getPublisher().equals(id) && post.getPublisher().equals(id1)){
+                                    postList.add(post);
+                                }
+                        }
+//                        if (post.getPublisher().equals(id)) {
 //                            postList.add(post);
 //                        }
-                    //}
+                    }
                 }
                 postAdapter.notifyDataSetChanged();
             }
