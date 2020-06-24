@@ -50,7 +50,7 @@ public class HomeScreenFragment extends Fragment {
         recyclerViewPosts.setLayoutManager(layoutManager);
 
         postList = new ArrayList<>();
-        postAdapter = new PostAdapter(getContext(),postList);
+        postAdapter = new PostAdapter(getContext(), postList);
         recyclerViewPosts.setAdapter(postAdapter);
 
         followingList = new ArrayList<>();
@@ -64,7 +64,7 @@ public class HomeScreenFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 followingList.clear();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     followingList.add(snapshot.getKey());
                 }
                 readPosts();
@@ -82,13 +82,14 @@ public class HomeScreenFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 postList.clear();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Post post = snapshot.getValue(Post.class);
-                    for (String id : followingList){
-                        if (post.getPublisher().equals(id)){
-                            postList.add(post);
-                        }
-                    }
+                    postList.add(post);
+//                    for (String id : followingList){
+//                        if (post.getPublisher().equals(id)){
+//                            postList.add(post);
+//                        }
+//                    }
                 }
                 postAdapter.notifyDataSetChanged();
             }
