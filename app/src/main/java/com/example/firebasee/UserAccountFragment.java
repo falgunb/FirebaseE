@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
@@ -19,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.firebasee.adapter.UserPostAdapter;
 import com.example.firebasee.model.Post;
 import com.example.firebasee.model.User;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,12 +31,18 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class UserAccountFragment extends Fragment {
 
     private RecyclerView recyclerView;
+    private UserPostAdapter userPostAdapter;
+    private List<Post> myPostList;
     private CircleImageView cir_profile;
     private TextView fullName;
     private TextView userName;
@@ -69,6 +77,17 @@ public class UserAccountFragment extends Fragment {
         userName = view.findViewById(R.id.tv_username_user_profile);
         follower = view.findViewById(R.id.tv_user_follower_count);
         following = view.findViewById(R.id.tv_user_following_count);
+        recyclerView = view.findViewById(R.id.recycler_view_user_posts);
+        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        layoutManager.setStackFromEnd(true);
+        layoutManager.setReverseLayout(true);
+        recyclerView.setLayoutManager(layoutManager);
+
+        myPostList = new ArrayList<>();
+        userPostAdapter = new UserPostAdapter(getContext(),myPostList);
+        recyclerView.setAdapter(userPostAdapter);
+
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,8 +123,31 @@ public class UserAccountFragment extends Fragment {
         userInfo();
         getFollowersAndFollowingsCount();
         getPostCount();
+        getMyPosts();
 
         return view;
+    }
+
+    private void getMyPosts() {
+        FirebaseDatabase.getInstance().getReference().child("Posts").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                myPostList.clear();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    Post post = dataSnapshot.getValue(Post.class);
+                    if (post.getPublisher().equals(profileId)){
+                        myPostList.add(post);
+                    }
+                }
+                Collections.reverse(myPostList);
+                userPostAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void getPostCount() {
