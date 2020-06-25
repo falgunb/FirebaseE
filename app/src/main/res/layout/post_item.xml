@@ -3,71 +3,46 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-
     android:layout_height="wrap_content"
     android:padding="8dp">
 
-    <!--ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:src="@drawable/ic_add"
-        android:layout_margin="15dp"
-        android:id="@+id/more"/-->
-
     <LinearLayout
         android:layout_width="match_parent"
+        android:background="@drawable/my_custom_background"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:background="@drawable/my_custom_background"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/image_profile"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_margin="5dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:src="@drawable/ic_person"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.045"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:src="@drawable/ic_person"/>
+                app:layout_constraintVertical_bias="0.6" />
 
             <TextView
                 android:id="@+id/post_username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="5dp"
-                android:layout_marginStart="52dp"
-                android:layout_marginLeft="52dp"
+                android:layout_gravity="center"
+                android:layout_margin="1dp"
                 android:hint="username"
-                android:textSize="20sp"
+                android:textSize="12sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/image_profile"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.151"
-                app:layout_constraintStart_toStartOf="@+id/image_profile"
-                app:layout_constraintTop_toTopOf="@+id/image_profile"
-                app:layout_constraintVertical_bias="0.0" />
-
-            <ImageView
-                android:id="@+id/image_option_dot"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_margin="5dp"
-                android:src="@drawable/ic_option_dot"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toEndOf="@+id/image_profile"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="MissingConstraints" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -81,8 +56,8 @@
 
                 android:id="@+id/description"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:padding="15dp"
+                android:layout_height="90dp"
+                android:padding="10dp"
                 android:fontFamily="sans-serif-condensed"
                 android:text=""
                 android:textColor="#000000"
@@ -98,7 +73,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:background="@drawable/my_custom_background"
             android:layout_width="match_parent"
             android:layout_height="52dp"
             android:padding="10dp">
@@ -187,34 +161,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <!--com.hendraanggrian.appcompat.widget.SocialTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:text="bujdibcjibdsbcd"
-                android:textSize="20dp"
-                android:textColor="@color/colorAccent"
-                android:id="@+id/description"/ -->
-
-            <!--TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginLeft="10dp"
-                android:textStyle="bold"
-                android:text="Falgun Budh"
-                android:id="@+id/author"
-                android:textColor="#000000"/-->
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
+            app:layout_constraintStart_toStartOf="parent"/>
 
     </LinearLayout>
 

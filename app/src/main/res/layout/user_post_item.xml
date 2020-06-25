@@ -14,15 +14,25 @@
         android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:background="@drawable/my_custom_background"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
 
+            <ImageView
+                android:id="@+id/image_option_dot"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_margin="5dp"
+                android:src="@drawable/ic_delete"
+                app:layout_constraintEnd_toEndOf="@+id/user_post_description"
+                app:layout_constraintTop_toTopOf="@+id/user_post_description" />
+
             <TextView
                 android:id="@+id/user_post_description"
                 android:layout_width="match_parent"
-                android:layout_height="130dp"
-                android:padding="5dp"
+                android:layout_height="110dp"
+                android:padding="25dp"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform"
                 app:layout_constraintBottom_toBottomOf="parent"

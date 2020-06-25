@@ -52,6 +52,7 @@ public class UserAccountFragment extends Fragment {
 
     FirebaseUser fUser;
     String profileId;
+    String postId;
 
     public UserAccountFragment() {
     }
@@ -63,6 +64,9 @@ public class UserAccountFragment extends Fragment {
 
         fUser = FirebaseAuth.getInstance().getCurrentUser();
         profileId = fUser.getUid();
+
+        Intent intent = getActivity().getIntent();
+        postId = intent.getStringExtra("postId");
 
         String data = getContext().getSharedPreferences("PROFILE", Context.MODE_PRIVATE).getString(profileId, "none");
         if (data.equals("none")){
@@ -85,7 +89,7 @@ public class UserAccountFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         myPostList = new ArrayList<>();
-        userPostAdapter = new UserPostAdapter(getContext(),myPostList);
+        userPostAdapter = new UserPostAdapter(getContext(),myPostList,postId);
         recyclerView.setAdapter(userPostAdapter);
 
 
