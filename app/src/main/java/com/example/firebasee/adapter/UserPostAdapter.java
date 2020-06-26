@@ -29,6 +29,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -60,8 +61,10 @@ public class UserPostAdapter extends RecyclerView.Adapter<UserPostAdapter.ViewHo
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         final Post post = userPosts.get(position);
+
         holder.userDesc.setText(post.getDescription());
-//        FirebaseDatabase.getInstance().getReference().child("Users").child(post.getPublisher()).addValueEventListener(new Va)
+        Picasso.get().load(post.getImageUrl()).into(holder.userPostedImage);
+        Log.d(TAG,"url is : " + post.getImageUrl());
 
         isLiked(post.getPostId(), holder.userLikeIcon);
         noOfLikes(post.getPostId(), holder.userLikesCount);
@@ -180,6 +183,7 @@ public class UserPostAdapter extends RecyclerView.Adapter<UserPostAdapter.ViewHo
         public TextView userRetweetCount;
         public TextView userCommentCount;
 
+        public ImageView userPostedImage;
         public ImageView post_options;
         public ImageView userRetweetIcon;
         public ImageView userLikeIcon;
@@ -193,6 +197,7 @@ public class UserPostAdapter extends RecyclerView.Adapter<UserPostAdapter.ViewHo
             userRetweetCount = itemView.findViewById(R.id.user_count_of_retweets);
             userCommentCount = itemView.findViewById(R.id.user_post_comment_count);
 
+            userPostedImage = itemView.findViewById(R.id.user_posted_image);
             post_options = itemView.findViewById(R.id.image_option_dot);
             userRetweetIcon = itemView.findViewById(R.id.user_post_retweet);
             userLikeIcon = itemView.findViewById(R.id.user_post_likes);

@@ -24,6 +24,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.hendraanggrian.appcompat.widget.SocialAutoCompleteTextView;
+import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
@@ -55,6 +56,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         final Post post = mPosts.get(position);
 
         holder.description.setText(post.getDescription());
+        Picasso.get().load(post.getImageUrl()).into(holder.postedImage);
         FirebaseDatabase.getInstance().getReference().child("Users").child(post.getPublisher()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -145,7 +147,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         public TextView noOfComments;
         public TextView noOfRetweets;
         public ImageView post_option_dot;
-
+        public ImageView postedImage;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -158,6 +160,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             comment = itemView.findViewById(R.id.comment);
             username = itemView.findViewById(R.id.post_username);
             likes = itemView.findViewById(R.id.no_of_likes);
+            postedImage = itemView.findViewById(R.id.posted_image);
             //author = itemView.findViewById(R.id.author);
             noOfComments = itemView.findViewById(R.id.no_of_comments);
             post_option_dot = itemView.findViewById(R.id.image_option_dot);
