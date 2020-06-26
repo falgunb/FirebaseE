@@ -39,17 +39,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:gravity="left"
+        android:gravity="right"
         android:padding="10dp">
 
         <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:id="@+id/image_added"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
             android:layout_gravity="center"
             android:scaleType="centerInside"
             android:src="@mipmap/ic_launcher"
-            android:visibility="gone"
-            android:id="@+id/image_added"/>
+            android:visibility="gone" />
 
         <com.hendraanggrian.appcompat.widget.SocialAutoCompleteTextView
             android:id="@+id/description"
@@ -61,29 +61,70 @@
             app:hashtagColor="@color/colorPrimary"
             app:socialFlags="hashtag|mention" />
 
-        <TextView
-            android:id="@+id/post"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="15dp"
-            android:gravity="left"
-            android:text="POST"
-            android:textColor="@color/colorPrimary"
-            android:textSize="18sp" />
+<!--        <TextView-->
+<!--            android:id="@+id/post"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginRight="15dp"-->
+<!--            android:gravity="right"-->
+<!--            android:text="POST"-->
+<!--            android:textColor="@color/colorPrimary"-->
+<!--            android:textSize="20sp" />-->
 
     </LinearLayout>
 
 
-    <!--LinearLayout
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:gravity="left"
+        android:gravity="center"
         android:padding="10dp">
-        <Button
-            android:layout_width="wrap_content"
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-    </LinearLayout-->
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/postImage"
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:layout_width="wrap_content"
+                    android:text="Choose Image"
+                    android:layout_height="wrap_content">
+                </Button>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginLeft="30dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/post"
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:layout_width="wrap_content"
+                    android:text="post"
+                    android:layout_height="wrap_content">
+                </Button>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
 
 </LinearLayout>
