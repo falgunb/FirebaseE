@@ -38,7 +38,6 @@ public class SearchFragment extends Fragment {
     }
 
     private RecyclerView recyclerView;
-    private ImageView searchBar;
     private List<User> mUsers;
     private TextView searchItem;
 
@@ -59,7 +58,24 @@ public class SearchFragment extends Fragment {
 
         readUsers();
         searchItem = view.findViewById(R.id.search_users);
-        searchBar = view.findViewById(R.id.search_bar);
+        searchItem.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int i, int i1, int i2) {
+                recyclerView.setVisibility(View.VISIBLE);
+                searchUser(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         return view;
     }
 

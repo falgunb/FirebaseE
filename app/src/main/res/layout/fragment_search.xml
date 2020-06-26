@@ -23,8 +23,6 @@
             android:id="@+id/search_users"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginLeft="20dp"
             android:hint="Search" />
 
         <!--com.hendraanggrian.appcompat.widget.SocialAutoCompleteTextView
@@ -51,9 +49,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/recycler_view_users"
-                android:layout_below="@id/bar"/>
+                android:layout_below="@id/bar"
+                android:visibility="gone"/>
 
             <androidx.recyclerview.widget.RecyclerView
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/recycler_view_tags"

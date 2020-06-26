@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -24,6 +25,8 @@ import android.widget.Toast;
 import com.example.firebasee.adapter.UserPostAdapter;
 import com.example.firebasee.model.Post;
 import com.example.firebasee.model.User;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -31,16 +34,23 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static android.app.Activity.RESULT_OK;
 
 
 public class UserAccountFragment extends Fragment {
 
+    private Uri imageUri;
     private RecyclerView recyclerView;
     private UserPostAdapter userPostAdapter;
     private List<Post> myPostList;
@@ -50,6 +60,8 @@ public class UserAccountFragment extends Fragment {
     private TextView follower;
     private TextView following;
     private ImageView btnLogout;
+    private FirebaseStorage fStorage;
+    private StorageReference sRefrence;
 
     FirebaseUser fUser;
     String profileId;
@@ -65,6 +77,9 @@ public class UserAccountFragment extends Fragment {
 
         fUser = FirebaseAuth.getInstance().getCurrentUser();
         profileId = fUser.getUid();
+
+        fStorage = FirebaseStorage.getInstance();
+        sRefrence = fStorage.getReference();
 
         Intent intent = getActivity().getIntent();
         postId = intent.getStringExtra("postId");
@@ -92,6 +107,13 @@ public class UserAccountFragment extends Fragment {
         myPostList = new ArrayList<>();
         userPostAdapter = new UserPostAdapter(getContext(),myPostList,postId);
         recyclerView.setAdapter(userPostAdapter);
+
+        cir_profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                choosePic();
+            }
+        });
 
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
@@ -131,6 +153,39 @@ public class UserAccountFragment extends Fragment {
         getMyPosts();
 
         return view;
+    }
+
+    private void choosePic() {
+        Intent i = new Intent();
+        i.setType("image/*");
+        i.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(i,1);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK && data!= null && data.getData() != null){
+            imageUri = data.getData();
+            cir_profile.setImageURI(imageUri);
+            uploadPic();
+        }
+    }
+
+    private void uploadPic() {
+        final String randomKey = UUID.randomUUID().toString();
+        StorageReference reference = sRefrence.child("Users").child("imageurl");
+        reference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Toast.makeText(getContext(), "Profile Picture Updated.", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getContext(), "Failed Update..", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void getMyPosts() {

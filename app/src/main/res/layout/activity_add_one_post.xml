@@ -39,8 +39,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_gravity="center"
+        android:padding="10dp"
         android:gravity="right"
-        android:padding="10dp">
+       >
 
         <ImageView
             android:id="@+id/image_added"
@@ -60,6 +62,7 @@
             android:layout_marginTop="15dp"
             android:hint="Say something.."
             android:maxLines="5"
+            android:padding="10dp"
             app:hashtagColor="@color/colorPrimary"
             app:socialFlags="hashtag|mention" />
 
