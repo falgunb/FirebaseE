@@ -2,6 +2,8 @@ package com.example.firebasee.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.net.Uri;
 import android.util.Log;
@@ -18,17 +20,24 @@ import com.example.firebasee.CommentActivity;
 import com.example.firebasee.R;
 import com.example.firebasee.model.Post;
 import com.example.firebasee.model.User;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.hendraanggrian.appcompat.widget.SocialAutoCompleteTextView;
 import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -36,6 +45,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     private Context mContext;
+    private Uri imageUri;
     private List<Post> mPosts;
     private List<User> mUsers;
     private static final String TAG = PostAdapter.class.getSimpleName();
@@ -66,8 +76,24 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
                 holder.username.setText(user.getUsername());
-//                holder.circularProfileImage.setImageURI(Uri.parse(user.getImageurl()));
-//                holder.author.setText(user.getName());
+                try {
+                    final File tmpFile = File.createTempFile("img", "png");
+                    final StorageReference reference2 = FirebaseStorage.getInstance().getReference().child("Users/" + FirebaseAuth.getInstance().getCurrentUser().getUid()+ "/Profile.jpg");
+                    Log.d(TAG,"image holder activated" + reference2);
+//                    reference2.getFile(tmpFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+//                        @Override
+//                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+//                            Bitmap image = BitmapFactory.decodeFile(tmpFile.getAbsolutePath());
+//                            Log.d(TAG, "onSuccessBitMapInPostAdapter: " + image);
+//                            holder.circularProfileImage.setImageBitmap(image);
+//                        }
+//                    });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+
             }
 
             @Override

@@ -46,6 +46,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
@@ -55,6 +57,8 @@ import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -81,7 +85,9 @@ public class UserAccountFragment extends Fragment {
     private ImageView btnLogout;
     private Button editProfilePic;
     private FirebaseStorage fStorage;
-    private StorageReference sRefrence;
+    private StorageReference storageReference;
+    FirebaseAuth fAuth;
+    FirebaseFirestore firebaseFirestore;
     private static final String TAG = UserAccountFragment.class.getSimpleName();
 
     public static final int PICK_IMAGE = 1;
@@ -101,24 +107,6 @@ public class UserAccountFragment extends Fragment {
         fUser = FirebaseAuth.getInstance().getCurrentUser();
         profileId = fUser.getUid();
 
-        fStorage = FirebaseStorage.getInstance();
-        sRefrence = fStorage.getReference();
-        StorageReference profileRef = sRefrence.child("Users/" + fUser.getUid() + "/imageurl");
-        profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Picasso.get().load(uri).into(cir_profile);
-                Toast.makeText(getContext(), "Upload successful", Toast.LENGTH_SHORT).show();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.e(TAG, "onFailure: ", e.getCause());
-                Toast.makeText(getContext(), "Upload Failed Oncreate" + e.getCause(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
         final Intent intent = getActivity().getIntent();
         postId = intent.getStringExtra("postId");
 
@@ -136,6 +124,8 @@ public class UserAccountFragment extends Fragment {
         follower = view.findViewById(R.id.tv_user_follower_count);
         following = view.findViewById(R.id.tv_user_following_count);
         recyclerView = view.findViewById(R.id.recycler_view_user_posts);
+        editProfilePic = view.findViewById(R.id.editProfilePic);
+
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setStackFromEnd(true);
@@ -151,11 +141,37 @@ public class UserAccountFragment extends Fragment {
             public void onClick(View view) {
                 Intent openGallaryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(openGallaryIntent, 698);
-//                Upload();
             }
         });
 
-        editProfilePic = view.findViewById(R.id.editProfilePic);
+
+        fAuth = FirebaseAuth.getInstance();
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        storageReference = FirebaseStorage.getInstance().getReference();
+        StorageReference profileRef = storageReference.child("Users/" + fAuth.getCurrentUser().getUid() + "/Profile.jpg");
+        profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Picasso.get().load(uri).into(cir_profile);
+            }
+        });
+
+//        try {
+//            final File tmpFile = File.createTempFile("img", "png");
+//            StorageReference reference2 = FirebaseStorage.getInstance().getReference("Users/" + fAuth.getCurrentUser().getUid());
+//
+//            reference2.child("/Profile.jpg").getFile(tmpFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+//                @Override
+//                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+//                    Bitmap image = BitmapFactory.decodeFile(tmpFile.getAbsolutePath());
+//                    Log.d(TAG, "onSuccessBitMap: " + image);
+////                    userImageView.setImageBitmap(image);
+//                }
+//            });
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -202,31 +218,29 @@ public class UserAccountFragment extends Fragment {
         if (requestCode == 698) {
             if (resultCode == RESULT_OK) {
                 Uri imageUri = data.getData();
-                cir_profile.setImageURI(imageUri);
+                //cir_profile.setImageURI(imageUri);
                 uploadImageToFirebase(imageUri);
             }
         }
     }
 
     private void uploadImageToFirebase(Uri imageUri) {
-        final StorageReference storageReference = sRefrence.child("Users/" + fUser.getUid() + "imageurl");
-        storageReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        final StorageReference fileRef = storageReference.child("Users/" + fAuth.getCurrentUser().getUid() + "/Profile.jpg");
+        fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
                         Picasso.get().load(uri).into(cir_profile);
-                        Toast.makeText(getContext(), "Upload successful", Toast.LENGTH_SHORT).show();
                     }
                 });
-
+//                Toast.makeText(getContext(), "Image Uploaded.", Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.e(TAG, "onFailure: ", e.getCause());
-                Toast.makeText(getContext(), "Upload Failed uploadImageToFirebase" + e.getCause(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Image not set.", Toast.LENGTH_SHORT).show();
             }
         });
     }

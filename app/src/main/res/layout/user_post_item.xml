@@ -14,6 +14,7 @@
         android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintlayout44"
             android:background="@drawable/my_custom_background"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -25,8 +26,8 @@
                 android:layout_height="25dp"
                 android:layout_margin="5dp"
                 android:src="@drawable/ic_delete"
-                app:layout_constraintEnd_toEndOf="@+id/user_post_description"
-                app:layout_constraintTop_toTopOf="@+id/user_post_description" />
+                app:layout_constraintEnd_toEndOf="@+id/constraintlayout44"
+                app:layout_constraintTop_toTopOf="@+id/constraintlayout44" />
 
             <TextView
                 android:id="@+id/user_post_description"
@@ -34,7 +35,6 @@
                 android:layout_height="110dp"
                 android:fontFamily="sans-serif-condensed"
                 android:padding="10dp"
-                android:text=""
                 android:textColor="#000000"
                 app:autoSizeTextType="uniform"
                 android:textStyle="bold"

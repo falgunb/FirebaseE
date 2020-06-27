@@ -24,7 +24,7 @@
                 android:layout_margin="5dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
-                android:src="@drawable/ic_person"
+
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -39,16 +39,17 @@
                 android:hint="username"
                 android:textSize="12sp"
                 android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.142"
+                app:layout_constraintStart_toStartOf="@+id/image_profile_post_item"
                 tools:ignore="MissingConstraints"
-                tools:layout_editor_absoluteX="35dp"
-                tools:layout_editor_absoluteY="5dp" />
+                tools:layout_editor_absoluteY="12dp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/my_custom_background">
+            android:layout_height="wrap_content">
 
             <TextView
 
@@ -81,52 +82,54 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp">
+            android:padding="5dp"
+            >
 
             <ImageView
                 android:id="@+id/like"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/ic_fav"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.008"
+                app:layout_constraintHorizontal_bias="0.413"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:src="@drawable/ic_fav"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/no_of_likes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="36dp"
-                android:layout_marginLeft="36dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
                 android:text="5"
                 android:textColor="#000000"
                 android:textSize="12sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/like"
                 app:layout_constraintStart_toStartOf="@+id/like"
-                app:layout_constraintTop_toTopOf="@+id/like"
-                app:layout_constraintVertical_bias="0.428" />
+                app:layout_constraintTop_toTopOf="@+id/like" />
 
             <ImageView
                 android:id="@+id/comment"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_marginStart="112dp"
-                android:layout_marginLeft="112dp"
+                android:layout_marginStart="68dp"
+                android:layout_marginLeft="68dp"
                 android:src="@drawable/ic_message"
                 app:layout_constraintBottom_toBottomOf="@+id/like"
                 app:layout_constraintStart_toStartOf="@+id/like"
-                app:layout_constraintTop_toTopOf="@+id/like" />
+                app:layout_constraintTop_toTopOf="@+id/like"
+                app:layout_constraintVertical_bias="0.0" />
 
             <TextView
                 android:id="@+id/no_of_comments"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="36dp"
-                android:layout_marginLeft="36dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
                 android:text="60"
                 android:textColor="#000000"
                 android:textSize="8sp"
@@ -137,11 +140,11 @@
 
             <ImageView
                 android:id="@+id/retweet"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_centerInParent="true"
-                android:layout_marginStart="56dp"
-                android:layout_marginLeft="56dp"
+                android:layout_marginStart="36dp"
+                android:layout_marginLeft="36dp"
                 android:src="@drawable/ic_tweet1"
                 app:layout_constraintBottom_toBottomOf="@+id/like"
                 app:layout_constraintStart_toStartOf="@+id/like"
@@ -152,8 +155,8 @@
                 android:id="@+id/no_of_retweets"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="36dp"
-                android:layout_marginLeft="36dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
                 android:text="60"
                 android:textColor="#000000"
                 android:textSize="10sp"
