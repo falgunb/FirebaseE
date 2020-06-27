@@ -149,18 +149,6 @@ public class AddOnePost extends AppCompatActivity {
 
                     ref.child(postId).setValue(map);
                     Log.d(TAG, "onCompleteMapValues: " +map);
-//                    DatabaseReference mHashTagRef = FirebaseDatabase.getInstance().getReference().child("HashTags");
-//                    List<String> hashTags = autoCompleteTextView.getHashtags();
-//                    if (!hashTags.isEmpty()) {
-//                        for (String tag : hashTags) {
-//                            map.clear();
-//
-//                            map.put("tag", tag.toLowerCase());
-//                            map.put("postId", postId);
-//
-//                            mHashTagRef.child(tag.toLowerCase()).child(postId).setValue(map);
-//                        }
-//                    }
                     pd.dismiss();
                     Toast.makeText(AddOnePost.this, "Image uploaded successfully. ", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(AddOnePost.this, MainActivity.class));
@@ -173,6 +161,19 @@ public class AddOnePost extends AppCompatActivity {
                 }
             });
         } else {
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Posts");
+            String postId = ref.push().getKey();
+
+            HashMap<String , Object> map = new HashMap<>();
+            map.put("postId" , postId);
+            map.put("description" , autoCompleteTextView.getText().toString());
+            map.put("publisher" , FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+            ref.child(postId).setValue(map);
+            Log.d(TAG, "onCompleteMapValuesWithoutImage: " +map);
+            pd.dismiss();
+            startActivity(new Intent(AddOnePost.this , MainActivity.class));
+            finish();
             Toast.makeText(this, "No image was selected!", Toast.LENGTH_SHORT).show();
         }
     }
@@ -180,17 +181,4 @@ public class AddOnePost extends AppCompatActivity {
     private String getFileExtension(Uri mUri) {
         return MimeTypeMap.getSingleton().getExtensionFromMimeType(this.getContentResolver().getType(mUri));
     }
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
-//            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-//            imageUri = result.getUri();
-//            imageAdded.setImageURI(imageUri);
-//        } else {
-//            Toast.makeText(this, "Try again..", Toast.LENGTH_SHORT).show();
-//        }
-//    }
 }

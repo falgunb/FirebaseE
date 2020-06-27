@@ -1,9 +1,15 @@
 package com.example.firebasee;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,10 +19,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -25,10 +33,14 @@ import android.widget.Toast;
 import com.example.firebasee.adapter.UserPostAdapter;
 import com.example.firebasee.model.Post;
 import com.example.firebasee.model.User;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,10 +48,16 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -51,6 +69,7 @@ import static android.app.Activity.RESULT_OK;
 public class UserAccountFragment extends Fragment {
 
     private Uri imageUri;
+    private String imageUrl;
     private RecyclerView recyclerView;
     private UserPostAdapter userPostAdapter;
     private List<Post> myPostList;
@@ -60,8 +79,12 @@ public class UserAccountFragment extends Fragment {
     private TextView follower;
     private TextView following;
     private ImageView btnLogout;
+    private Button editProfilePic;
     private FirebaseStorage fStorage;
     private StorageReference sRefrence;
+    private static final String TAG = UserAccountFragment.class.getSimpleName();
+
+    public static final int PICK_IMAGE = 1;
 
     FirebaseUser fUser;
     String profileId;
@@ -80,14 +103,29 @@ public class UserAccountFragment extends Fragment {
 
         fStorage = FirebaseStorage.getInstance();
         sRefrence = fStorage.getReference();
+        StorageReference profileRef = sRefrence.child("Users/" + fUser.getUid() + "/imageurl");
+        profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Picasso.get().load(uri).into(cir_profile);
+                Toast.makeText(getContext(), "Upload successful", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e(TAG, "onFailure: ", e.getCause());
+                Toast.makeText(getContext(), "Upload Failed Oncreate" + e.getCause(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
-        Intent intent = getActivity().getIntent();
+
+        final Intent intent = getActivity().getIntent();
         postId = intent.getStringExtra("postId");
 
         String data = getContext().getSharedPreferences("PROFILE", Context.MODE_PRIVATE).getString(profileId, "none");
-        if (data.equals("none")){
+        if (data.equals("none")) {
             profileId = fUser.getUid();
-        }else {
+        } else {
             profileId = data;
         }
 
@@ -105,16 +143,19 @@ public class UserAccountFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         myPostList = new ArrayList<>();
-        userPostAdapter = new UserPostAdapter(getContext(),myPostList,postId);
+        userPostAdapter = new UserPostAdapter(getContext(), myPostList, postId);
         recyclerView.setAdapter(userPostAdapter);
 
         cir_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                choosePic();
+                Intent openGallaryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(openGallaryIntent, 698);
+//                Upload();
             }
         });
 
+        editProfilePic = view.findViewById(R.id.editProfilePic);
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,7 +167,7 @@ public class UserAccountFragment extends Fragment {
                 alertDialogBuilder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Log.d("MSG", "onClick: YES");
+                        Log.d(TAG, "onClick: YES");
                         FirebaseAuth.getInstance().signOut();
                         startActivity(new Intent(getContext(), StartActivity.class));
                         Toast.makeText(getContext(), "Logged out successfully", Toast.LENGTH_SHORT).show();
@@ -138,7 +179,7 @@ public class UserAccountFragment extends Fragment {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.cancel();
                         Toast.makeText(getContext(), "So, You've Chosen Death?", Toast.LENGTH_SHORT).show();
-                        Log.d("MSG", "onClick: No");
+                        Log.d(TAG, "onClick: No");
                     }
                 });
 
@@ -155,35 +196,37 @@ public class UserAccountFragment extends Fragment {
         return view;
     }
 
-    private void choosePic() {
-        Intent i = new Intent();
-        i.setType("image/*");
-        i.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(i,1);
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 && resultCode == RESULT_OK && data!= null && data.getData() != null){
-            imageUri = data.getData();
-            cir_profile.setImageURI(imageUri);
-            uploadPic();
+        if (requestCode == 698) {
+            if (resultCode == RESULT_OK) {
+                Uri imageUri = data.getData();
+                cir_profile.setImageURI(imageUri);
+                uploadImageToFirebase(imageUri);
+            }
         }
     }
 
-    private void uploadPic() {
-        final String randomKey = UUID.randomUUID().toString();
-        StorageReference reference = sRefrence.child("Users").child("imageurl");
-        reference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+    private void uploadImageToFirebase(Uri imageUri) {
+        final StorageReference storageReference = sRefrence.child("Users/" + fUser.getUid() + "imageurl");
+        storageReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(getContext(), "Profile Picture Updated.", Toast.LENGTH_SHORT).show();
+                storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Picasso.get().load(uri).into(cir_profile);
+                        Toast.makeText(getContext(), "Upload successful", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getContext(), "Failed Update..", Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "onFailure: ", e.getCause());
+                Toast.makeText(getContext(), "Upload Failed uploadImageToFirebase" + e.getCause(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -193,9 +236,9 @@ public class UserAccountFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 myPostList.clear();
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Post post = dataSnapshot.getValue(Post.class);
-                    if (post.getPublisher().equals(profileId)){
+                    if (post.getPublisher().equals(profileId)) {
                         myPostList.add(post);
                     }
                 }

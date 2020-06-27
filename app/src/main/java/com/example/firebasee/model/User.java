@@ -1,16 +1,25 @@
 package com.example.firebasee.model;
 
 public class User {
-    private String name,email,username,id;
+    private String name,email,username,id, imageurl;
 
     public User() {
     }
 
-    public User(String name, String email, String username, String id) {
+    public User(String name, String email, String username, String id, String imageurl) {
         this.name = name;
         this.email = email;
         this.username = username;
         this.id = id;
+        this.imageurl = imageurl;
+    }
+
+    public String getImageurl() {
+        return imageurl;
+    }
+
+    public void setImageurl(String imageurl) {
+        this.imageurl = imageurl;
     }
 
     public String getName() {

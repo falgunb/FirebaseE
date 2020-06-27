@@ -3,6 +3,7 @@ package com.example.firebasee.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,16 +31,20 @@ import org.w3c.dom.Text;
 
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     private Context mContext;
     private List<Post> mPosts;
+    private List<User> mUsers;
     private static final String TAG = PostAdapter.class.getSimpleName();
     private FirebaseUser firebaseUser;
 
     public PostAdapter(Context mContext, List<Post> mPosts) {
         this.mContext = mContext;
         this.mPosts = mPosts;
+//        this.mUsers = mUsers;
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
     }
 
@@ -54,7 +59,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
 
         final Post post = mPosts.get(position);
-
         holder.description.setText(post.getDescription());
         Picasso.get().load(post.getImageUrl()).into(holder.postedImage);
         FirebaseDatabase.getInstance().getReference().child("Users").child(post.getPublisher()).addValueEventListener(new ValueEventListener() {
@@ -62,6 +66,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
                 holder.username.setText(user.getUsername());
+//                holder.circularProfileImage.setImageURI(Uri.parse(user.getImageurl()));
 //                holder.author.setText(user.getName());
             }
 
@@ -148,6 +153,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         public TextView noOfRetweets;
         public ImageView post_option_dot;
         public ImageView postedImage;
+        public CircleImageView circularProfileImage;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -164,6 +170,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             //author = itemView.findViewById(R.id.author);
             noOfComments = itemView.findViewById(R.id.no_of_comments);
             post_option_dot = itemView.findViewById(R.id.image_option_dot);
+
+            circularProfileImage = itemView.findViewById(R.id.image_profile_post_item);
 
         }
     }
