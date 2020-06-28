@@ -42,15 +42,8 @@
                         android:layout_height="25dp"
                         android:layout_gravity="right"
                         android:src="@drawable/ic_power"
-                        tools:ignore="ContentDescription"></ImageView>
-
-                    <Button
-                        android:id="@+id/editProfilePic"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        style="@style/Widget.AppCompat.Button.Colored"
-                        android:text="edit Profile picture"/>
+                        tools:ignore="ContentDescription"
+                        />
 
                 </LinearLayout>
 
@@ -112,7 +105,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:text="25"
-                            android:textColor="@color/colorPrimaryDark"
+                            android:textColor="@color/colorPrimary"
                             android:textSize="18sp"
                             android:textStyle="bold" />
 
@@ -140,7 +133,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:text="25"
-                            android:textColor="@color/colorPrimaryDark"
+                            android:textColor="@color/colorPrimary"
                             android:textSize="18sp"
                             android:textStyle="bold" />
 

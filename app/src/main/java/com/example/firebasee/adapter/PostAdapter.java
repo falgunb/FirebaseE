@@ -78,8 +78,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 holder.username.setText(user.getUsername());
                 try {
                     final File tmpFile = File.createTempFile("img", "png");
-                    final StorageReference reference2 = FirebaseStorage.getInstance().getReference().child("Users/" + FirebaseAuth.getInstance().getCurrentUser().getUid()+ "/Profile.jpg");
+                    final StorageReference reference2 = FirebaseStorage.getInstance().getReferenceFromUrl("gs://fir-e-40daf.appspot.com/").child("Users/" + post.getPublisher() + "/Profile.jpg");
                     Log.d(TAG,"image holder activated" + reference2);
+                    reference2.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            Log.d("FirebaseEPostAdapter: ", "uri: " + uri.toString());
+                            Picasso.get().load(uri).into(holder.circularProfileImage);
+                        }
+                    });
 //                    reference2.getFile(tmpFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
 //                        @Override
 //                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {

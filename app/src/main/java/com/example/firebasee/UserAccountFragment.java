@@ -83,7 +83,6 @@ public class UserAccountFragment extends Fragment {
     private TextView follower;
     private TextView following;
     private ImageView btnLogout;
-    private Button editProfilePic;
     private FirebaseStorage fStorage;
     private StorageReference storageReference;
     FirebaseAuth fAuth;
@@ -124,7 +123,6 @@ public class UserAccountFragment extends Fragment {
         follower = view.findViewById(R.id.tv_user_follower_count);
         following = view.findViewById(R.id.tv_user_following_count);
         recyclerView = view.findViewById(R.id.recycler_view_user_posts);
-        editProfilePic = view.findViewById(R.id.editProfilePic);
 
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
