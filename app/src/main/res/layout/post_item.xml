@@ -60,8 +60,8 @@
                 android:text=""
                 android:textColor="#000000"
                 app:autoSizeTextType="uniform"
-                app:layout_constraintBottom_toTopOf="@+id/user_posted_image"
-                app:layout_constraintEnd_toEndOf="@+id/user_posted_image"
+                app:layout_constraintBottom_toTopOf="@+id/posted_image"
+                app:layout_constraintEnd_toEndOf="@+id/posted_image"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 

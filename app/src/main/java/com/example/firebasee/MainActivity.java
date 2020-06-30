@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private NavigationView navigationView;
     private Fragment selectorFragment;
     private DrawerLayout mDrawer;
-    private ImageView drawer_icon;
     private BottomNavigationView bottomNavigationView;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -48,17 +47,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.nav_drawer_layout);
-        //Toolbar toolbar = findViewById(R.id.toolbar);
+        final Toolbar toolbar = findViewById(R.id.toolbar1);
+        setSupportActionBar(toolbar);
 
-        drawer_icon = findViewById(R.id.drawer_image);
         FloatingActionButton fab = findViewById(R.id.fab);
-
         setupFirebaseAuth();
-
-        //default fragment
-
 
         //Bottom nav
         NavigationView navigationView = findViewById(R.id.navigation_view);
@@ -69,22 +63,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 switch (item.getItemId()) {
                     case R.id.bottom_menu_home_nav:
                         selectorFragment = new HomeScreenFragment();
+                        toolbar.setTitle("Feed");
                         break;
                     case R.id.bottom_menu_search:
                         selectorFragment = new SearchFragment();
+                        toolbar.setTitle("Search");
                         break;
                     case R.id.bottom_menu_heart:
                         selectorFragment = new LikesFragment();
+                        toolbar.setTitle("Likes");
                         break;
                     case R.id.bottom_menu_message:
                         selectorFragment = new MessagesFragment();
+                        toolbar.setTitle("Messages");
                         break;
                     case R.id.bottom_menu_user:
                         selectorFragment = new UserAccountFragment();
+                        toolbar.setTitle("Account");
                         break;
                 }
                 if (selectorFragment != null) {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectorFragment).addToBackStack(null).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectorFragment).commit();
                 }
                 return true;
             }
@@ -103,19 +102,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //drawer layout
         mDrawer = findViewById(R.id.drawer_layout);
-        drawer_icon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.i(TAG,"drawer icon pressed....");
-                mDrawer.openDrawer(GravityCompat.START);
-            }
-        });
-//        ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(this, mDrawer, toolbar,
-//                R.string.navigation_drawer_open,
-//                R.string.navigation_drawer_close);
-//
-//        mDrawer.addDrawerListener(drawerToggle);
-//        drawerToggle.syncState();
+        ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(this, mDrawer, toolbar,
+                R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close);
+
+        mDrawer.addDrawerListener(drawerToggle);
+        drawerToggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -156,16 +148,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_user_profile:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new UserAccountFragment()).addToBackStack(null).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new UserAccountFragment()).commit();
                 break;
             case R.id.nav_home:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeScreenFragment()).addToBackStack(null).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeScreenFragment()).commit();
                 break;
             case R.id.nav_gallery:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new GalleryFragment()).addToBackStack(null).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new GalleryFragment()).commit();
                 break;
             case R.id.nav_slideshow:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SlideshowFragment()).addToBackStack(null).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SlideshowFragment()).commit();
                 break;
         }
         mDrawer.closeDrawer(GravityCompat.START);
@@ -222,6 +214,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (getSupportFragmentManager().findFragmentByTag("MyFragment") != null)
+            getSupportFragmentManager().findFragmentByTag("MyFragment").setRetainInstance(true);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (getSupportFragmentManager().findFragmentByTag("MyFragment") != null)
+            getSupportFragmentManager().findFragmentByTag("MyFragment").getRetainInstance();
     }
 
 }

@@ -4,10 +4,12 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +30,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomeScreenFragment extends Fragment {
+
+    public static final String TAG = HomeScreenFragment.class.getSimpleName();
 
     private RecyclerView recyclerViewPosts;
     private PostAdapter postAdapter;
@@ -129,4 +133,18 @@ public class HomeScreenFragment extends Fragment {
             }
         });
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        // save state
+    }
+
+    @Override
+    public void onViewStateRestored(Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+//        String greeting = (savedInstanceState != null) ? savedInstanceState.getString("greeting") : "null";
+        Log.d(TAG, " onViewStateRestored: ");
+    }
+
 }

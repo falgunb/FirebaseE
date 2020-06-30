@@ -362,7 +362,8 @@ public class UserAccountFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
+        if (mAuthListener!= null)
+            mAuth.addAuthStateListener(mAuthListener);
     }
 
     @Override
