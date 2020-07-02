@@ -86,6 +86,7 @@ public class UserAccountFragment extends Fragment {
     private CircleImageView cir_profile;
     private TextView fullName;
     private TextView userName;
+    private Button userFollowingStatus;
     private TextView follower;
     private TextView following;
     private ImageView btnLogout;
@@ -115,12 +116,23 @@ public class UserAccountFragment extends Fragment {
         final Intent intent = getActivity().getIntent();
         postId = intent.getStringExtra("postId");
 
-        String data = getContext().getSharedPreferences("PROFILE", Context.MODE_PRIVATE).getString(profileId, "none");
+        String data = getContext().getSharedPreferences("PROFILE", Context.MODE_PRIVATE).getString("profileId", "none");
         if (data.equals("none")) {
             profileId = fUser.getUid();
         } else {
             profileId = data;
         }
+
+//        if (profileId.equals(fUser.getUid())){
+//            cir_profile.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    Toast.makeText(getContext(), "You're in " +profileId+ "profile", Toast.LENGTH_SHORT).show();
+//                }
+//            });
+//        } else {
+//            checkFollowingStatus();
+//        }
 
         btnLogout = view.findViewById(R.id.user_logout_button);
         cir_profile = view.findViewById(R.id.user_profile_imageView);
@@ -129,6 +141,7 @@ public class UserAccountFragment extends Fragment {
         follower = view.findViewById(R.id.tv_user_follower_count);
         following = view.findViewById(R.id.tv_user_following_count);
         recyclerView = view.findViewById(R.id.recycler_view_user_posts);
+        userFollowingStatus = view.findViewById(R.id.user_follow_button);
 
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -160,21 +173,29 @@ public class UserAccountFragment extends Fragment {
             }
         });
 
-//        try {
-//            final File tmpFile = File.createTempFile("img", "png");
-//            StorageReference reference2 = FirebaseStorage.getInstance().getReference("Users/" + fAuth.getCurrentUser().getUid());
+//        userFollowingStatus.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                String btnText = userFollowingStatus.getText().toString();
+//                if (btnText.equals("Edit Profile")){
 //
-//            reference2.child("/Profile.jpg").getFile(tmpFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-//                @Override
-//                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-//                    Bitmap image = BitmapFactory.decodeFile(tmpFile.getAbsolutePath());
-//                    Log.d(TAG, "onSuccessBitMap: " + image);
-////                    userImageView.setImageBitmap(image);
+//                }else{
+//                    if (btnText.equals("Follow")){
+//                        FirebaseDatabase.getInstance().getReference().child("Follow")
+//                                .child(fUser.getUid()).child("Following").child(profileId).setValue(true);
+//
+//                        FirebaseDatabase.getInstance().getReference().child("Follow").child(profileId)
+//                                .child("Followers").child(fUser.getUid()).setValue(true);
+//                    }else{
+//                        FirebaseDatabase.getInstance().getReference().child("Follow")
+//                                .child(fUser.getUid()).child("Following").child(profileId).removeValue();
+//
+//                        FirebaseDatabase.getInstance().getReference().child("Follow").child(profileId)
+//                                .child("Followers").child(fUser.getUid()).removeValue();
+//                    }
 //                }
-//            });
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+//            }
+//        });
 
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
@@ -214,6 +235,24 @@ public class UserAccountFragment extends Fragment {
         getMyPosts();
 
         return view;
+    }
+
+    private void checkFollowingStatus() {
+        FirebaseDatabase.getInstance().getReference().child("Follow").child(fUser.getUid()).child("Following").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.child(profileId).exists()){
+                    userFollowingStatus.setText("Following");
+                } else{
+                    userFollowingStatus.setText("Follow");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     @Override
@@ -373,4 +412,15 @@ public class UserAccountFragment extends Fragment {
             mAuth.removeAuthStateListener(mAuthListener);
         }
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
 }

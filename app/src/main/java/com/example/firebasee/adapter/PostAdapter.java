@@ -87,14 +87,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                             Picasso.get().load(uri).into(holder.circularProfileImage);
                         }
                     });
-//                    reference2.getFile(tmpFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-//                        @Override
-//                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-//                            Bitmap image = BitmapFactory.decodeFile(tmpFile.getAbsolutePath());
-//                            Log.d(TAG, "onSuccessBitMapInPostAdapter: " + image);
-//                            holder.circularProfileImage.setImageBitmap(image);
-//                        }
-//                    });
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

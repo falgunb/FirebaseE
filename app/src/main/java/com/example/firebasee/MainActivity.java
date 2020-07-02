@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
+    public int taskView = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,24 +63,38 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.bottom_menu_home_nav:
-                        selectorFragment = new HomeScreenFragment();
-                        toolbar.setTitle("Feed");
+                        if(taskView != 0){
+                            selectorFragment = new HomeScreenFragment();
+                            toolbar.setTitle("Feed");
+                        }
                         break;
                     case R.id.bottom_menu_search:
-                        selectorFragment = new SearchFragment();
-                        toolbar.setTitle("Search");
+                        if(taskView != 1){
+                            taskView = 1;
+                            selectorFragment = new SearchFragment();
+                            toolbar.setTitle("Search");
+                        }
                         break;
                     case R.id.bottom_menu_heart:
-                        selectorFragment = new LikesFragment();
-                        toolbar.setTitle("Likes");
+                        if(taskView != 2){
+                            taskView = 2;
+                            selectorFragment = new LikesFragment();
+                            toolbar.setTitle("Likes");
+                        }
                         break;
                     case R.id.bottom_menu_message:
-                        selectorFragment = new MessagesFragment();
-                        toolbar.setTitle("Messages");
+                        if(taskView != 3){
+                            taskView = 3;
+                            selectorFragment = new MessagesFragment();
+                            toolbar.setTitle("Messages");
+                        }
                         break;
                     case R.id.bottom_menu_user:
-                        selectorFragment = new UserAccountFragment();
-                        toolbar.setTitle("Account");
+                        if(taskView != 4){
+                            taskView = 4;
+                            selectorFragment = new UserAccountFragment();
+                            toolbar.setTitle("Account");
+                        }
                         break;
                 }
                 if (selectorFragment != null) {
@@ -97,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new UserAccountFragment()).commit();
             bottomNavigationView.setSelectedItemId(R.id.bottom_menu_home_nav);
         } else {
+            taskView = 0;
             getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, new HomeScreenFragment()).commit();
         }
 
@@ -117,24 +133,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
     }
-
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.main, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-//        switch (item.getItemId()) {
-//            case R.id.logout_action:
-//                Toast.makeText(getApplicationContext(), "Logging out..", Toast.LENGTH_LONG).show();
-//                FirebaseAuth.getInstance().signOut();
-//                startActivity(new Intent(MainActivity.this, StartActivity.class));
-//                finish();
-//                return super.onOptionsItemSelected(item);
-//        }
-//        return true;
-//    }
 
     @Override
     public void onBackPressed() {
@@ -201,7 +199,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onStart() {
         super.onStart();
-        Log.d(TAG, "onStart: called of Main Activity");
+        Log.d(TAG, "onStart: called");
         mAuth.addAuthStateListener(mAuthListener);
         bottomNavigationView.setSelectedItemId(R.id.bottom_menu_home_nav);
         checkCurrentUser(mAuth.getCurrentUser());
