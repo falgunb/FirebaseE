@@ -11,7 +11,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_centerInParent="true"
-        android:src="@drawable/ic_account_box"
+        android:src="@drawable/logo"
         android:visibility="visible"/>
 
     <LinearLayout
@@ -25,13 +25,14 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:src="@drawable/ic_panorama" />
+            android:layout_margin="9dp"
+            android:src="@drawable/logo" />
 
         <Button
             android:id="@+id/login"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@drawable/button_background"
+            style="@style/Widget.AppCompat.ActionButton.Overflow"
             android:text="Login" />
 
         <androidx.legacy.widget.Space
@@ -42,7 +43,7 @@
             android:id="@+id/signup"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@drawable/button_background"
+            style="@style/Widget.AppCompat.ActionButton.Overflow"
             android:text="SignUp" />
 
     </LinearLayout>

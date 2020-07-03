@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,7 @@ import com.example.firebasee.R;
 import com.example.firebasee.model.Comment;
 import com.example.firebasee.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -25,7 +28,12 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -34,6 +42,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     public Context mContext;
     private List<Comment> mComments;
     String postId;
+    public static final String TAG = CommentAdapter.class.getSimpleName();
 
     public CommentAdapter(Context mContext, List<Comment> mComments, String postId) {
         this.mContext = mContext;
@@ -61,6 +70,22 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
                 holder.username.setText(user.getUsername());
+
+                try {
+                    final File tmpFile = File.createTempFile("img", "png");
+                    final StorageReference reference2 = FirebaseStorage.getInstance().getReferenceFromUrl("gs://fir-e-40daf.appspot.com/").child("Users/" + comment.getPublisher() + "/Profile.jpg");
+                    Log.d(TAG,"image holder activated" + reference2);
+                    reference2.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            Log.d("FirebaseEPostAdapter: ", "uri: " + uri.toString());
+                            Picasso.get().load(uri).into(holder.circleImageView);
+                        }
+                    });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
             }
 
             @Override

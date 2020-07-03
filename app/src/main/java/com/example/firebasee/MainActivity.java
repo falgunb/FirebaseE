@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 switch (item.getItemId()) {
                     case R.id.bottom_menu_home_nav:
                         if(taskView != 0){
+                            taskView = 0;
                             selectorFragment = new HomeScreenFragment();
                             toolbar.setTitle("Feed");
                         }
@@ -191,7 +192,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
                 }
-                // ...
             }
         };
     }

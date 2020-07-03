@@ -123,16 +123,6 @@ public class UserAccountFragment extends Fragment {
             profileId = data;
         }
 
-//        if (profileId.equals(fUser.getUid())){
-//            cir_profile.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    Toast.makeText(getContext(), "You're in " +profileId+ "profile", Toast.LENGTH_SHORT).show();
-//                }
-//            });
-//        } else {
-//            checkFollowingStatus();
-//        }
 
         btnLogout = view.findViewById(R.id.user_logout_button);
         cir_profile = view.findViewById(R.id.user_profile_imageView);
@@ -172,30 +162,6 @@ public class UserAccountFragment extends Fragment {
                 Picasso.get().load(uri).into(cir_profile);
             }
         });
-
-//        userFollowingStatus.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                String btnText = userFollowingStatus.getText().toString();
-//                if (btnText.equals("Edit Profile")){
-//
-//                }else{
-//                    if (btnText.equals("Follow")){
-//                        FirebaseDatabase.getInstance().getReference().child("Follow")
-//                                .child(fUser.getUid()).child("Following").child(profileId).setValue(true);
-//
-//                        FirebaseDatabase.getInstance().getReference().child("Follow").child(profileId)
-//                                .child("Followers").child(fUser.getUid()).setValue(true);
-//                    }else{
-//                        FirebaseDatabase.getInstance().getReference().child("Follow")
-//                                .child(fUser.getUid()).child("Following").child(profileId).removeValue();
-//
-//                        FirebaseDatabase.getInstance().getReference().child("Follow").child(profileId)
-//                                .child("Followers").child(fUser.getUid()).removeValue();
-//                    }
-//                }
-//            }
-//        });
 
 
         btnLogout.setOnClickListener(new View.OnClickListener() {

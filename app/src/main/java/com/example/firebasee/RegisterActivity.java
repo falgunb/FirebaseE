@@ -126,6 +126,5 @@ public class RegisterActivity extends AppCompatActivity {
             e.getMessage();
         }
 
-
     }
 }

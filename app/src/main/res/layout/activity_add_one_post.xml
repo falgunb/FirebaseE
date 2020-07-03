@@ -66,16 +66,6 @@
             app:hashtagColor="@color/colorPrimary"
             app:socialFlags="hashtag|mention" />
 
-<!--        <TextView-->
-<!--            android:id="@+id/post"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginRight="15dp"-->
-<!--            android:gravity="right"-->
-<!--            android:text="POST"-->
-<!--            android:textColor="@color/colorPrimary"-->
-<!--            android:textSize="20sp" />-->
-
     </LinearLayout>
 
 
@@ -83,7 +73,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:gravity="center"
         android:padding="10dp">
 
