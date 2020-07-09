@@ -96,7 +96,7 @@ public class UserAccountFragment extends Fragment {
     FirebaseFirestore firebaseFirestore;
     private static final String TAG = UserAccountFragment.class.getSimpleName();
 
-    public static final int PICK_IMAGE = 1;
+//    public static final int PICK_IMAGE = 1;
 
     FirebaseUser fUser;
     String profileId;

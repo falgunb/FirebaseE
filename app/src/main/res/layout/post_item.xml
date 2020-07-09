@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/my_custom_background"
     android:padding="8dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:background="@drawable/my_custom_background"
+
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="vertical">
@@ -19,8 +20,8 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/image_profile_post_item"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:layout_margin="5dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
@@ -87,8 +88,8 @@
 
             <ImageView
                 android:id="@+id/like"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:layout_marginStart="150dp"
                 android:layout_marginLeft="152dp"
                 android:src="@drawable/ic_fav"
@@ -112,8 +113,8 @@
 
             <ImageView
                 android:id="@+id/retweet"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:layout_marginStart="44dp"
                 android:layout_marginLeft="44dp"
                 android:src="@drawable/ic_tweet1"
@@ -137,8 +138,8 @@
 
             <ImageView
                 android:id="@+id/comment"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:layout_marginStart="88dp"
                 android:layout_marginLeft="88dp"
                 android:src="@drawable/ic_message"
@@ -165,4 +166,4 @@
 
     </LinearLayout>
 
-</RelativeLayout>
+</ScrollView>

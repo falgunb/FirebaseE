@@ -208,7 +208,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onStop() {
         super.onStop();
-        Log.d(TAG, "onStop: called of Main Activity");
+        Log.d(TAG, "onStop: called");
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
@@ -216,16 +216,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onPause() {
+        Log.d(TAG, "onPause: ");
         super.onPause();
-        if (getSupportFragmentManager().findFragmentByTag("MyFragment") != null)
-            getSupportFragmentManager().findFragmentByTag("MyFragment").setRetainInstance(true);
     }
 
     @Override
     protected void onResume() {
+        Log.d(TAG, "onResume: ");
         super.onResume();
-        if (getSupportFragmentManager().findFragmentByTag("MyFragment") != null)
-            getSupportFragmentManager().findFragmentByTag("MyFragment").getRetainInstance();
+
     }
 
 }
