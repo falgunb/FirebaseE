@@ -70,7 +70,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
         final Post post = mPosts.get(position);
         holder.description.setText(post.getDescription());
-        Picasso.get().load(post.getImageUrl()).into(holder.postedImage);
+
+        if (holder.postedImage == null){
+            holder.postedImage.setVisibility(View.GONE);
+        }else{
+            Picasso.get().load(post.getImageUrl()).into(holder.postedImage);
+            holder.postedImage.setVisibility(View.VISIBLE);
+        }
+
+
         FirebaseDatabase.getInstance().getReference().child("Users").child(post.getPublisher()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

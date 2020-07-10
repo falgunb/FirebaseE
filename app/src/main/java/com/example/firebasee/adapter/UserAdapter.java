@@ -57,7 +57,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         holder.username.setText(user.getUsername());
         holder.fullname.setText(user.getName());
 
-//        Picasso.get().load(user)
 
         isFollowed(user.getId(), holder.btnFollow);
         if (user.getId().equals(firebaseUser.getUid())) {

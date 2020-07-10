@@ -63,7 +63,15 @@ public class UserPostAdapter extends RecyclerView.Adapter<UserPostAdapter.ViewHo
         final Post post = userPosts.get(position);
 
         holder.userDesc.setText(post.getDescription());
-        Picasso.get().load(post.getImageUrl()).into(holder.userPostedImage);
+
+        if (holder.userPostedImage == null){
+            holder.userPostedImage.setVisibility(View.GONE);
+        }else{
+            Picasso.get().load(post.getImageUrl()).into(holder.userPostedImage);
+            holder.userPostedImage.setVisibility(View.VISIBLE);
+        }
+
+//        Picasso.get().load(post.getImageUrl()).into(holder.userPostedImage);
         Log.d(TAG,"url is : " + post.getImageUrl());
 
         isLiked(post.getPostId(), holder.userLikeIcon);
@@ -109,7 +117,7 @@ public class UserPostAdapter extends RecyclerView.Adapter<UserPostAdapter.ViewHo
         holder.userRetweetIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG, "onClicked retweet......");
+                Log.d(TAG, "onClicked Retweet......");
                 try {
                     if (holder.userRetweetIcon.getTag().equals("Retweet")) {
                         FirebaseDatabase.getInstance().getReference().child("Retweeted").child(post.getPostId()).child(firebaseUser.getUid())

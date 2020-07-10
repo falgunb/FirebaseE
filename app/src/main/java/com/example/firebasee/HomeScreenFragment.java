@@ -135,33 +135,22 @@ public class HomeScreenFragment extends Fragment {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        // save state
-    }
-
-    @Override
     public void onResume() {
+        Log.d(TAG, "onResume: ");
+        readPosts();
         super.onResume();
-
     }
 
     @Override
     public void onPause() {
+        Log.d(TAG, "onPause: ");
+        postList.clear();
         super.onPause();
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-    }
-
-
-    @Override
-    public void onViewStateRestored(Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-//        String greeting = (savedInstanceState != null) ? savedInstanceState.getString("greeting") : "null";
-        Log.d(TAG, " onViewStateRestored: ");
     }
 
 }
