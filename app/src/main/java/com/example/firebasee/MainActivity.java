@@ -99,8 +99,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         break;
                 }
                 if (selectorFragment != null) {
-                    taskView = 0;
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectorFragment).addToBackStack(null).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectorFragment).commit();
                 }
                 return true;
             }
@@ -114,8 +113,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new UserAccountFragment()).commit();
             bottomNavigationView.setSelectedItemId(R.id.bottom_menu_home_nav);
         } else {
-            taskView = 0;
-            getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, new HomeScreenFragment()).addToBackStack(null).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, new HomeScreenFragment()).commit();
         }
 
         //drawer layout
