@@ -99,6 +99,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         break;
                 }
                 if (selectorFragment != null) {
+                    taskView = 0;
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectorFragment).addToBackStack(null).commit();
                 }
                 return true;
@@ -110,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             String profileId = intent.getString("publisherId");
             getSharedPreferences("PROFILE",MODE_PRIVATE).edit().putString("profileId",profileId).apply();
 
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new UserAccountFragment()).addToBackStack(null).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new UserAccountFragment()).commit();
             bottomNavigationView.setSelectedItemId(R.id.bottom_menu_home_nav);
         } else {
             taskView = 0;
