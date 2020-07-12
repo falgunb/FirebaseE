@@ -45,10 +45,10 @@
                     <Button
                         android:id="@+id/user_follow_button"
                         android:layout_width="150dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50dp"
                         android:layout_gravity="right"
                         android:text="Edit Profile"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         tools:ignore="ContentDescription"
                         />
 
