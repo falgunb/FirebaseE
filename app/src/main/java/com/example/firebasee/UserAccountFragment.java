@@ -243,30 +243,23 @@ public class UserAccountFragment extends Fragment {
     }
 
     private void uploadImageToFirebase(final Uri imageUri) {
-        new Thread(new Runnable() {
+        final StorageReference fileRef = storageReference.child("Users/" + fAuth.getCurrentUser().getUid() + "/Profile.jpg");
+        fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
-            public void run() {
-                final StorageReference fileRef = storageReference.child("Users/" + fAuth.getCurrentUser().getUid() + "/Profile.jpg");
-                fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                Picasso.get().load(uri).into(cir_profile);
-                            }
-                        });
-//                Toast.makeText(getContext(), "Image Uploaded.", Toast.LENGTH_SHORT).show();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getContext(), "Image not set.", Toast.LENGTH_SHORT).show();
+                    public void onSuccess(Uri uri) {
+                        Picasso.get().load(uri).into(cir_profile);
                     }
                 });
             }
-        }).start();
-        Log.d(TAG, "uploadImageToFirebase: ");
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getContext(), "Image not set.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void getMyPosts() {
