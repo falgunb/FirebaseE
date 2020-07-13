@@ -119,9 +119,11 @@ public class UserAccountFragment extends Fragment {
         String data = getContext().getSharedPreferences("PROFILE", Context.MODE_PRIVATE).getString("profileId", "none");
         if (data.equals("none")) {
             profileId = fUser.getUid();
+            Log.d(TAG, "onCreateView: (if block) " + profileId + " /n " + fUser.getUid());
         } else {
             profileId = data;
             getContext().getSharedPreferences("PROFILE", Context.MODE_PRIVATE).edit().clear().apply();
+            Log.d(TAG, "onCreateView: (else block) " + profileId + " /n " + data);
         }
 
 
@@ -214,9 +216,9 @@ public class UserAccountFragment extends Fragment {
         FirebaseDatabase.getInstance().getReference().child("Follow").child(fUser.getUid()).child("Following").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.child(profileId).exists()){
+                if (snapshot.child(profileId).exists()) {
                     userFollowingStatus.setText("Following");
-                } else{
+                } else {
                     userFollowingStatus.setText("Follow");
                 }
             }
@@ -240,25 +242,31 @@ public class UserAccountFragment extends Fragment {
         }
     }
 
-    private void uploadImageToFirebase(Uri imageUri) {
-        final StorageReference fileRef = storageReference.child("Users/" + fAuth.getCurrentUser().getUid() + "/Profile.jpg");
-        fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+    private void uploadImageToFirebase(final Uri imageUri) {
+        new Thread(new Runnable() {
             @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            public void run() {
+                final StorageReference fileRef = storageReference.child("Users/" + fAuth.getCurrentUser().getUid() + "/Profile.jpg");
+                fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
-                    public void onSuccess(Uri uri) {
-                        Picasso.get().load(uri).into(cir_profile);
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                Picasso.get().load(uri).into(cir_profile);
+                            }
+                        });
+//                Toast.makeText(getContext(), "Image Uploaded.", Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getContext(), "Image not set.", Toast.LENGTH_SHORT).show();
                     }
                 });
-//                Toast.makeText(getContext(), "Image Uploaded.", Toast.LENGTH_SHORT).show();
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getContext(), "Image not set.", Toast.LENGTH_SHORT).show();
-            }
-        });
+        }).start();
+        Log.d(TAG, "uploadImageToFirebase: ");
     }
 
     private void getMyPosts() {
@@ -374,7 +382,7 @@ public class UserAccountFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        if (mAuthListener!= null)
+        if (mAuthListener != null)
             mAuth.addAuthStateListener(mAuthListener);
     }
 

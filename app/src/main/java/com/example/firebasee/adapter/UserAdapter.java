@@ -1,7 +1,9 @@
 package com.example.firebasee.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.firebasee.MainActivity;
 import com.example.firebasee.R;
 import com.example.firebasee.UserAccountFragment;
 import com.example.firebasee.model.User;
@@ -29,6 +32,7 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
+    private static final String TAG = "UserAdapter";
 
     private Context mContext;
     private List<User> mUsers;
@@ -82,10 +86,16 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPreferences.Editor editor = mContext.getSharedPreferences("PREPS", Context.MODE_PRIVATE).edit();
-                editor.putString("profileId", user.getId());
-                editor.apply();
-                ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new UserAccountFragment()).commit();
+                if (isFragment) {
+                    mContext.getSharedPreferences("PROFILE", Context.MODE_PRIVATE).edit().putString("profileId", user.getId()).apply();
+                    ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new UserAccountFragment()).addToBackStack(null).commit();
+                    Log.d(TAG, "onClick: isFragment: " + isFragment);
+                } else {
+                    Intent intent = new Intent(mContext, MainActivity.class);
+                    intent.putExtra("publisherId", user.getId());
+                    mContext.startActivity(intent);
+                    Log.d(TAG, "onClick: " +intent);
+                }
             }
         });
     }

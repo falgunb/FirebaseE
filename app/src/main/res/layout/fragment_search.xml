@@ -13,11 +13,6 @@
         android:background="#ffffff"
         android:padding="5dp">
 
-        <!--ImageView
-            android:id="@+id/search_bar"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/ic_search" /-->
 
         <EditText
             android:id="@+id/search_users"
@@ -25,13 +20,6 @@
             android:layout_height="wrap_content"
             android:hint="Search" />
 
-        <!--com.hendraanggrian.appcompat.widget.SocialAutoCompleteTextView
-            android:id="@+id/search_bar"
-            android:layout_width="91dp"
-            android:layout_height="87dp"
-            android:layout_marginLeft="20dp"
-            android:background="@android:color/transparent"
-            android:hint="Search..." /-->
 
     </RelativeLayout>
 
