@@ -72,14 +72,18 @@ import static android.app.Activity.RESULT_OK;
 
 public class UserAccountFragment extends Fragment {
 
+    //firsThingsFirst,lol
+    private static final String TAG = UserAccountFragment.class.getSimpleName();
+
+    //firebase
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseDatabase mFirebaseDatabase;
-
     private DatabaseReference myRef;
+    private StorageReference storageReference;
+    FirebaseAuth fAuth;
 
-    private Uri imageUri;
-    private String imageUrl;
+    //ui
     private RecyclerView recyclerView;
     private UserPostAdapter userPostAdapter;
     private List<Post> myPostList;
@@ -90,13 +94,7 @@ public class UserAccountFragment extends Fragment {
     private TextView follower;
     private TextView following;
     private ImageView btnLogout;
-    private FirebaseStorage fStorage;
-    private StorageReference storageReference;
-    FirebaseAuth fAuth;
-    FirebaseFirestore firebaseFirestore;
-    private static final String TAG = UserAccountFragment.class.getSimpleName();
 
-//    public static final int PICK_IMAGE = 1;
 
     FirebaseUser fUser;
     String profileId;
@@ -109,23 +107,6 @@ public class UserAccountFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_user_account, container, false);
-
-        fUser = FirebaseAuth.getInstance().getCurrentUser();
-        profileId = fUser.getUid();
-
-        final Intent intent = getActivity().getIntent();
-        postId = intent.getStringExtra("postId");
-
-        String data = getContext().getSharedPreferences("PROFILE", Context.MODE_PRIVATE).getString("profileId", "none");
-        if (data.equals("none")) {
-            profileId = fUser.getUid();
-            Log.d(TAG, "onCreateView: (if block) " + profileId + " /n " + fUser.getUid());
-        } else {
-            profileId = data;
-            getContext().getSharedPreferences("PROFILE", Context.MODE_PRIVATE).edit().clear().apply();
-            Log.d(TAG, "onCreateView: (else block) " + profileId + " /n " + data);
-        }
-
 
         btnLogout = view.findViewById(R.id.user_logout_button);
         cir_profile = view.findViewById(R.id.user_profile_imageView);
@@ -146,25 +127,64 @@ public class UserAccountFragment extends Fragment {
         userPostAdapter = new UserPostAdapter(getContext(), myPostList, postId);
         recyclerView.setAdapter(userPostAdapter);
 
-        cir_profile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent openGallaryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(openGallaryIntent, 698);
-            }
-        });
-
 
         fAuth = FirebaseAuth.getInstance();
-        firebaseFirestore = FirebaseFirestore.getInstance();
-        storageReference = FirebaseStorage.getInstance().getReference();
-        StorageReference profileRef = storageReference.child("Users/" + fAuth.getCurrentUser().getUid() + "/Profile.jpg");
-        profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Picasso.get().load(uri).into(cir_profile);
+        fUser = FirebaseAuth.getInstance().getCurrentUser();
+        profileId = fUser.getUid();
+
+        final Intent intent = getActivity().getIntent();
+        postId = intent.getStringExtra("postId");
+
+        String data = getContext().getSharedPreferences("PROFILE", Context.MODE_PRIVATE).getString("profileId", "none");
+        if (data.equals("none")) {
+            profileId = fUser.getUid();
+            try {
+
+                cir_profile.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        startActivityForResult(openGalleryIntent, 698);
+                    }
+                });
+
+                storageReference = FirebaseStorage.getInstance().getReference();
+                StorageReference profileRef = storageReference.child("Users/" + profileId + "/Profile.jpg");
+                profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Picasso.get().load(uri).into(cir_profile);
+                    }
+                });
+
+                userFollowingStatus.setVisibility(View.GONE);
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        });
+            Log.d(TAG, "onCreateView: (if block) " + profileId);
+
+        } else {
+            profileId = data;
+            getContext().getSharedPreferences("PROFILE", Context.MODE_PRIVATE).edit().clear().apply();
+
+            try {
+                storageReference = FirebaseStorage.getInstance().getReference();
+                StorageReference profileRef = storageReference.child("Users/" + profileId + "/Profile.jpg");
+                profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Picasso.get().load(uri).into(cir_profile);
+                    }
+                });
+
+                btnLogout.setVisibility(View.GONE);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            Log.d(TAG, "onCreateView: (else block) " + profileId + " /n " + data);
+        }
 
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
@@ -202,6 +222,7 @@ public class UserAccountFragment extends Fragment {
         getFollowersAndFollowingsCount();
         getPostCount();
         getMyPosts();
+        setupFirebaseAuth();
 
         if (profileId.equals(fUser.getUid())) {
             userFollowingStatus.setText("Edit profile");
@@ -236,13 +257,12 @@ public class UserAccountFragment extends Fragment {
         if (requestCode == 698) {
             if (resultCode == RESULT_OK) {
                 Uri imageUri = data.getData();
-                //cir_profile.setImageURI(imageUri);
                 uploadImageToFirebase(imageUri);
             }
         }
     }
 
-    private void uploadImageToFirebase(final Uri imageUri) {
+    private void uploadImageToFirebase(Uri imageUri) {
         final StorageReference fileRef = storageReference.child("Users/" + fAuth.getCurrentUser().getUid() + "/Profile.jpg");
         fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -251,6 +271,7 @@ public class UserAccountFragment extends Fragment {
                     @Override
                     public void onSuccess(Uri uri) {
                         Picasso.get().load(uri).into(cir_profile);
+                        Log.d(TAG, "onSuccess: " + uri);
                     }
                 });
             }
