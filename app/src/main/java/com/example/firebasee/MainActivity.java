@@ -103,6 +103,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new UserAccountFragment()).commit();
             bottomNavigationView.setSelectedItemId(R.id.bottom_menu_home_nav);
         } else {
+            taskView = 0;
             getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, new HomeScreenFragment()).commit();
         }
 

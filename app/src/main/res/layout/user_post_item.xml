@@ -10,16 +10,16 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:gravity="center_vertical"
         android:orientation="vertical">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintlayout44"
+            android:layout_width="393dp"
+            android:layout_height="wrap_content"
             android:background="@drawable/my_custom_background"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            tools:layout_editor_absoluteX="1dp">
 
 
             <ImageView
@@ -38,22 +38,22 @@
                 android:fontFamily="sans-serif-condensed"
                 android:padding="8dp"
                 android:textColor="#000000"
-                app:autoSizeTextType="uniform"
                 android:textStyle="bold"
+                app:autoSizeTextType="uniform"
                 app:layout_constraintBottom_toTopOf="@+id/user_posted_image"
                 app:layout_constraintEnd_toEndOf="@+id/user_posted_image"
                 app:layout_constraintStart_toStartOf="@+id/user_posted_image" />
 
             <ImageView
-                android:background="@drawable/my_custom_background"
                 android:id="@+id/user_posted_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:baselineAlignBottom="true"
-                android:scaleType="fitXY"
-                android:padding="2dp"
-                android:visibility="gone"
                 android:adjustViewBounds="true"
+                android:background="@drawable/my_custom_background"
+                android:baselineAlignBottom="true"
+                android:padding="2dp"
+                android:scaleType="fitXY"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -61,20 +61,21 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:background="@drawable/my_custom_background"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp">
+            android:background="@drawable/my_custom_background"
+            android:padding="10dp"
+            tools:layout_editor_absoluteY="110dp">
 
             <ImageView
                 android:id="@+id/user_post_likes"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:src="@drawable/ic_fav"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.008"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:src="@drawable/ic_fav"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/user_post_likes_count"
@@ -99,11 +100,11 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginStart="55dp"
                 android:layout_marginLeft="55dp"
+                android:src="@drawable/ic_message"
                 app:layout_constraintBottom_toBottomOf="@+id/user_post_retweet"
                 app:layout_constraintStart_toStartOf="@+id/user_post_retweet"
                 app:layout_constraintTop_toTopOf="@+id/user_post_retweet"
-                app:layout_constraintVertical_bias="1.0"
-                android:src="@drawable/ic_message"/>
+                app:layout_constraintVertical_bias="1.0" />
 
             <TextView
                 android:id="@+id/user_post_comment_count"

@@ -58,7 +58,7 @@ public class HomeScreenFragment extends Fragment {
         recyclerViewPosts.setLayoutManager(layoutManager);
 
         progressDialog = new ProgressDialog(getContext());
-        progressDialog.setMessage("Loading posts...");
+        progressDialog.setMessage("Loading Posts...");
         progressDialog.show();
         postList = new ArrayList<>();
         postAdapter = new PostAdapter(getContext(), postList);
@@ -144,7 +144,6 @@ public class HomeScreenFragment extends Fragment {
     @Override
     public void onPause() {
         Log.d(TAG, "onPause: ");
-        postList.clear();
         super.onPause();
     }
 
