@@ -20,11 +20,26 @@
                 android:orientation="horizontal"
                 android:padding="15dp">
 
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/user_profile_imageView"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:src="@drawable/ic_person" />
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center">
+
+                    <ProgressBar
+                        android:id="@+id/profile_pic_progressbar"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:visibility="gone"
+                        />
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/user_profile_imageView"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:src="@drawable/ic_person" />
+
+                </RelativeLayout>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"

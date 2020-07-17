@@ -27,6 +27,7 @@ import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -94,6 +95,7 @@ public class UserAccountFragment extends Fragment {
     private TextView follower;
     private TextView following;
     private ImageView btnLogout;
+    private ProgressBar profileProgressBar;
 
 
     FirebaseUser fUser;
@@ -101,6 +103,11 @@ public class UserAccountFragment extends Fragment {
     String postId;
 
     public UserAccountFragment() {
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
     }
 
     @Override
@@ -116,6 +123,7 @@ public class UserAccountFragment extends Fragment {
         following = view.findViewById(R.id.tv_user_following_count);
         recyclerView = view.findViewById(R.id.recycler_view_user_posts);
         userFollowingStatus = view.findViewById(R.id.user_follow_button);
+        profileProgressBar = view.findViewById(R.id.profile_pic_progressbar);
 
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -143,6 +151,7 @@ public class UserAccountFragment extends Fragment {
                 cir_profile.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        profileProgressBar.setVisibility(View.VISIBLE);
                         Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                         startActivityForResult(openGalleryIntent, 698);
                     }
@@ -170,11 +179,12 @@ public class UserAccountFragment extends Fragment {
 
             try {
                 storageReference = FirebaseStorage.getInstance().getReference();
-                StorageReference profileRef = storageReference.child("Users/" + profileId + "/Profile.jpg");
-                profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                StorageReference profileRef1 = storageReference.child("Users/" + profileId + "/Profile.jpg");
+                profileRef1.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
                         Picasso.get().load(uri).into(cir_profile);
+                        profileProgressBar.setVisibility(View.INVISIBLE);
                     }
                 });
 
@@ -270,6 +280,7 @@ public class UserAccountFragment extends Fragment {
                 fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
+                        profileProgressBar.setVisibility(View.GONE);
                         Picasso.get().load(uri).into(cir_profile);
                         Log.d(TAG, "onSuccess: " + uri);
                     }

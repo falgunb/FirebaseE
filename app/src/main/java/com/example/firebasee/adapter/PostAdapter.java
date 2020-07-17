@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -85,14 +86,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 User user = dataSnapshot.getValue(User.class);
                 holder.username.setText(user.getUsername());
                 try {
+                    holder.profileProgressBar.setVisibility(View.VISIBLE);
                     final File tmpFile = File.createTempFile("img", "png");
-                    final StorageReference reference2 = FirebaseStorage.getInstance().getReferenceFromUrl("gs://fir-e-40daf.appspot.com/").child("Users/" + post.getPublisher() + "/Profile.jpg");
+                    final StorageReference reference2 = FirebaseStorage.getInstance().getReferenceFromUrl("gs://fir-e-40daf.appspot.com/").child("Users/" + user.getId() + "/Profile.jpg");
                     Log.d(TAG,"image holder activated" + reference2);
                     reference2.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
-                            Log.d("FirebaseEPostAdapter: ", "uri: " + uri.toString());
+                            holder.profileProgressBar.setVisibility(View.GONE);
                             Picasso.get().load(uri).into(holder.circularProfileImage);
+                            Log.d(TAG, "uri profile pic: " + uri.toString());
                         }
                     });
                 } catch (IOException e) {
@@ -187,6 +190,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         public ImageView post_option_dot;
         public ImageView postedImage;
         public CircleImageView circularProfileImage;
+        private ProgressBar profileProgressBar;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -205,6 +209,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             post_option_dot = itemView.findViewById(R.id.image_option_dot);
 
             circularProfileImage = itemView.findViewById(R.id.image_profile_post_item);
+            profileProgressBar = itemView.findViewById(R.id.profile_progressbar);
 
         }
     }
