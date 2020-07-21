@@ -68,6 +68,7 @@ public class HomeScreenFragment extends Fragment {
         followerList = new ArrayList<>();
         checkFollowingUsers();
         checkFollowerUsers();
+        readPosts();
         return view;
     }
 
@@ -80,7 +81,7 @@ public class HomeScreenFragment extends Fragment {
                 for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                     followerList.add(snapshot1.getKey());
                 }
-                readPosts();
+//                readPosts();
             }
 
             @Override
@@ -99,7 +100,7 @@ public class HomeScreenFragment extends Fragment {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     followingList.add(snapshot.getKey());
                 }
-                readPosts();
+//                readPosts();
             }
 
             @Override
@@ -137,7 +138,6 @@ public class HomeScreenFragment extends Fragment {
     @Override
     public void onResume() {
         Log.d(TAG, "onResume: ");
-        readPosts();
         super.onResume();
     }
 
@@ -149,6 +149,7 @@ public class HomeScreenFragment extends Fragment {
 
     @Override
     public void onDetach() {
+        Log.d(TAG, "onDetach: ");
         super.onDetach();
     }
 
