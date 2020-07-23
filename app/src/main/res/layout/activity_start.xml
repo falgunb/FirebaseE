@@ -32,6 +32,7 @@
             android:id="@+id/login"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:background="?android:selectableItemBackground"
             style="@style/Widget.AppCompat.ActionButton.Overflow"
             android:text="Login" />
 
@@ -43,6 +44,7 @@
             android:id="@+id/signup"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:background="?android:selectableItemBackground"
             style="@style/Widget.AppCompat.ActionButton.Overflow"
             android:text="SignUp" />
 

@@ -67,8 +67,8 @@ public class HomeScreenFragment extends Fragment {
         followingList = new ArrayList<>();
         followerList = new ArrayList<>();
         checkFollowingUsers();
-        checkFollowerUsers();
-        readPosts();
+//        checkFollowerUsers();
+//        readPosts();
         return view;
     }
 
@@ -100,7 +100,7 @@ public class HomeScreenFragment extends Fragment {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     followingList.add(snapshot.getKey());
                 }
-//                readPosts();
+                readPosts();
             }
 
             @Override

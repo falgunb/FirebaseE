@@ -16,6 +16,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.RequestQueue;
 import com.example.firebasee.CommentActivity;
 import com.example.firebasee.R;
 import com.example.firebasee.model.Post;
@@ -70,8 +71,6 @@ public class UserPostAdapter extends RecyclerView.Adapter<UserPostAdapter.ViewHo
             Picasso.get().load(post.getImageUrl()).into(holder.userPostedImage);
             holder.userPostedImage.setVisibility(View.VISIBLE);
         }
-
-//        Picasso.get().load(post.getImageUrl()).into(holder.userPostedImage);
         Log.d(TAG,"url is : " + post.getImageUrl());
 
         isLiked(post.getPostId(), holder.userLikeIcon);

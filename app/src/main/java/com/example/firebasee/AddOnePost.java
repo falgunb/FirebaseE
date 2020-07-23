@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
@@ -72,7 +73,11 @@ public class AddOnePost extends AppCompatActivity {
         post1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Upload();
+                if(TextUtils.isEmpty(autoCompleteTextView.getText().toString()) && imageUri == null){
+                    Toast.makeText(AddOnePost.this, "No Data.. please enter image or desc", Toast.LENGTH_SHORT).show();
+                }else {
+                    Upload();
+                }
             }
         });
         imagePost.setOnClickListener(new View.OnClickListener() {

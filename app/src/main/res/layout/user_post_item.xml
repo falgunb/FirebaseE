@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp"
-    android:background="@drawable/my_custom_background">
+    android:padding="8dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,7 +15,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintlayout44"
-            android:layout_width="393dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/my_custom_background"
             tools:layout_editor_absoluteX="1dp">

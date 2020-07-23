@@ -6,14 +6,25 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary"
+    <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/toolbar1"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:elevation="2dp">
 
-    </androidx.appcompat.widget.Toolbar>
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/tooooolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
+        </com.google.android.material.appbar.MaterialToolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
 
     <FrameLayout
         android:id="@+id/fragment_container"
@@ -27,8 +38,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
+            android:elevation="20dp"
             android:src="@drawable/plus1"
             app:elevation="6dp"
+            android:background="?android:selectableItemBackground"
             app:pressedTranslationZ="12dp">
 
         </com.google.android.material.floatingactionbutton.FloatingActionButton>
@@ -47,9 +60,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#ffffff"
-            app:menu="@menu/bottom_menu"
             android:clickable="true"
-            />
+            app:menu="@menu/bottom_menu" />
 
     </LinearLayout>
 
