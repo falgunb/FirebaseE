@@ -9,6 +9,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -42,7 +43,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         final Toolbar toolbar = findViewById(R.id.tooooolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
+        final FloatingActionButton fab = findViewById(R.id.fab);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            fab.setElevation(3);
+        }
         setupFirebaseAuth();
 
         //Bottom nav
@@ -63,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         if(taskView != 1){
                             taskView = 1;
                             selectorFragment = new SearchFragment();
+                            fab.hide();
                             toolbar.setTitle("Search");
                         }
                         break;
@@ -70,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         if(taskView != 2){
                             taskView = 2;
                             selectorFragment = new LikesFragment();
+                            fab.hide();
                             toolbar.setTitle("Likes");
                         }
                         break;
@@ -77,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         if(taskView != 3){
                             taskView = 3;
                             selectorFragment = new MessagesFragment();
+                            fab.hide();
                             toolbar.setTitle("Messages");
                         }
                         break;
