@@ -10,7 +10,7 @@
             android:title="User" />
 
         <item
-            android:id="@+id/nav_home"
+            android:id="@+id/bottom_menu_home_nav"
             android:icon="@drawable/ic_home"
             android:title="Home" />
         <item

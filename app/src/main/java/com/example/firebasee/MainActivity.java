@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         final Toolbar toolbar = findViewById(R.id.tooooolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
+        final FloatingActionButton fab = findViewById(R.id.fab);
         setupFirebaseAuth();
 
         //Bottom nav
@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case R.id.bottom_menu_search:
                         if(taskView != 1){
                             taskView = 1;
+                            fab.hide();
                             selectorFragment = new SearchFragment();
                             toolbar.setTitle("Search");
                         }
@@ -69,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case R.id.bottom_menu_heart:
                         if(taskView != 2){
                             taskView = 2;
+                            fab.hide();
                             selectorFragment = new LikesFragment();
                             toolbar.setTitle("Likes");
                         }
@@ -76,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case R.id.bottom_menu_message:
                         if(taskView != 3){
                             taskView = 3;
+                            fab.hide();
                             selectorFragment = new MessagesFragment();
                             toolbar.setTitle("Messages");
                         }
@@ -83,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case R.id.bottom_menu_user:
                         if(taskView != 4){
                             taskView = 4;
+                            fab.hide();
                             selectorFragment = new UserAccountFragment();
                             toolbar.setTitle("Account");
                         }
@@ -127,10 +131,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        if (mDrawer.isDrawerOpen(GravityCompat.START)) {
+        int fragments = getSupportFragmentManager().getBackStackEntryCount();
+        if (fragments == 1 && mDrawer.isDrawerOpen(GravityCompat.START)) {
             mDrawer.closeDrawer(GravityCompat.START);
-        } else
-            super.onBackPressed();
+            finish();
+        } else {
+            if (getFragmentManager().getBackStackEntryCount() >= 1) {
+                getFragmentManager().popBackStack();
+            } else {
+                super.onBackPressed();
+            }
+        }
+
     }
 
     @Override
@@ -139,8 +151,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_user_profile:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new UserAccountFragment()).commit();
                 break;
-            case R.id.nav_home:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeScreenFragment()).commit();
+            case R.id.bottom_menu_home_nav:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeScreenFragment()).addToBackStack(null).commit();
                 break;
             case R.id.nav_gallery:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new GalleryFragment()).commit();

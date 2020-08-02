@@ -73,7 +73,7 @@ import static android.app.Activity.RESULT_OK;
 
 public class UserAccountFragment extends Fragment {
 
-    //firsThingsFirst,lol
+    //firstThingsFirst,lol
     private static final String TAG = UserAccountFragment.class.getSimpleName();
 
     //firebase
@@ -421,12 +421,31 @@ public class UserAccountFragment extends Fragment {
 
     @Override
     public void onResume() {
+        Log.d(TAG, "onResume: ");
         super.onResume();
     }
 
     @Override
     public void onPause() {
+        Log.d(TAG, "onPause: ");
         super.onPause();
     }
 
+    @Override
+    public void onDetach() {
+        Log.d(TAG, "onDetach: ");
+        super.onDetach();
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.d(TAG, "onDestroy: ");
+        super.onDestroy();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        Log.d(TAG, "onViewCreated: ");
+        super.onViewCreated(view, savedInstanceState);
+    }
 }
