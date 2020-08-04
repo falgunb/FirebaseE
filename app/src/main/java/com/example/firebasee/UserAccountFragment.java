@@ -407,6 +407,7 @@ public class UserAccountFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        Log.d(TAG, "onStart: ");
         if (mAuthListener != null)
             mAuth.addAuthStateListener(mAuthListener);
     }
@@ -414,15 +415,20 @@ public class UserAccountFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
-        }
+        Log.d(TAG, "onStop: ");
+//        if (mAuthListener != null) {
+//            mAuth.removeAuthStateListener(mAuthListener);
+//        }
     }
 
     @Override
     public void onResume() {
         Log.d(TAG, "onResume: ");
         super.onResume();
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            userInfo();
+            getMyPosts();
+        }
     }
 
     @Override

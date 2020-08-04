@@ -1,6 +1,7 @@
 package com.example.firebasee;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -139,6 +140,9 @@ public class HomeScreenFragment extends Fragment {
     public void onResume() {
         Log.d(TAG, "onResume: ");
         super.onResume();
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            checkFollowingUsers();
+        }
     }
 
     @Override

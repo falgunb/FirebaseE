@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 
 import com.example.firebasee.adapter.UserAdapter;
 import com.example.firebasee.model.User;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,6 +34,7 @@ import java.util.List;
 
 public class SearchFragment extends Fragment {
 
+    private static final String TAG = "SearchFragment";
 
     public SearchFragment() {
         // Required empty public constructor
@@ -121,5 +124,17 @@ public class SearchFragment extends Fragment {
 
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: ");
+        readUsers();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 }

@@ -203,7 +203,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onStart();
         Log.d(TAG, "onStart: called");
         mAuth.addAuthStateListener(mAuthListener);
-        bottomNavigationView.setSelectedItemId(R.id.bottom_menu_home_nav);
+//        bottomNavigationView.setSelectedItemId(R.id.bottom_menu_home_nav);
         checkCurrentUser(mAuth.getCurrentUser());
     }
 
@@ -211,9 +211,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onStop() {
         super.onStop();
         Log.d(TAG, "onStop: called");
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
-        }
     }
 
     @Override
