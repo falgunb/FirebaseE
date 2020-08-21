@@ -110,6 +110,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Bundle intent = getIntent().getExtras();
         if (intent != null){
             String profileId = intent.getString("publisherId");
+            Log.d(TAG, "onBundle: "+ profileId);
             getSharedPreferences("PROFILE",MODE_PRIVATE).edit().putString("profileId",profileId).apply();
 
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new UserAccountFragment()).commit();
@@ -233,5 +234,4 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onResume();
 
     }
-
 }
