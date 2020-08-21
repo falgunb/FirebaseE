@@ -1,4 +1,4 @@
-package com.example.firebasee;
+package com.example.firebasee.ui.fragments;
 
 import android.os.Bundle;
 
@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.firebasee.R;
 
 public class MessagesFragment extends Fragment {
 

@@ -1,4 +1,4 @@
-package com.example.firebasee;
+package com.example.firebasee.ui.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -16,6 +16,14 @@ import android.view.MenuItem;
 import android.view.View;
 
 
+import com.example.firebasee.ui.fragments.GalleryFragment;
+import com.example.firebasee.ui.fragments.HomeScreenFragment;
+import com.example.firebasee.ui.fragments.LikesFragment;
+import com.example.firebasee.ui.fragments.MessagesFragment;
+import com.example.firebasee.R;
+import com.example.firebasee.ui.fragments.SearchFragment;
+import com.example.firebasee.ui.fragments.SlideshowFragment;
+import com.example.firebasee.ui.fragments.UserAccountFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;

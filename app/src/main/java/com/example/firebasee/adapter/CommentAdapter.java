@@ -15,7 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.firebasee.MainActivity;
+import com.example.firebasee.ui.activities.MainActivity;
 import com.example.firebasee.R;
 import com.example.firebasee.model.Comment;
 import com.example.firebasee.model.User;

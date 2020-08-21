@@ -1,4 +1,4 @@
-package com.example.firebasee;
+package com.example.firebasee.ui.fragments;
 
 import android.os.Bundle;
 
@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.firebasee.R;
 import com.example.firebasee.adapter.UserAdapter;
 import com.example.firebasee.model.User;
 import com.google.firebase.auth.FirebaseAuth;
